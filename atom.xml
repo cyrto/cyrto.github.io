@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-05T10:12:03.584Z</updated>
+  <updated>2019-12-31T12:17:05.202Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2019年总结</title>
+    <link href="http://yoursite.com/2019/12/31/2019%E5%B9%B4%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2019/12/31/2019%E5%B9%B4%E6%80%BB%E7%BB%93/</id>
+    <published>2019-12-31T12:13:48.000Z</published>
+    <updated>2019-12-31T12:17:05.202Z</updated>
+    
+    <content type="html"><![CDATA[<p>2019年马上就要过去，然后是2020年，它同时是21世纪20年代的开端，也是博主人生中最重要的十年吧~</p><p>主要从几个方面总结一下：</p><h5 id="工作方面："><a href="#工作方面：" class="headerlink" title="工作方面："></a>工作方面：</h5><p>算是走出了crud的泥潭，加入了一个remote的startup团队，leader和同事也比较nice，但也要忍受独自办公的孤独，不过对于喜欢独处的我来说再合适不过了。</p><h5 id="技术方面："><a href="#技术方面：" class="headerlink" title="技术方面："></a>技术方面：</h5><ul><li>尝试用多种语言crud，上半年用了一下Django，最近学习了Go，然后发现，语言远远没有底层知识那么重要。</li><li>学会了对接(ctrlcv)各种第三方工具</li><li>database design的能力提升了几个level</li><li>对big front end有了新的认识</li><li>重量级框架的源码尝试阅读了几个，功力貌似还是不够，有时间明年继续尝试</li></ul><p>总体来看，技术方面长进的不算太多，主要是基础和算法这一块欠缺不少。间歇性的想提高算法看到leetcode上的题就有点头疼。</p><p>就是工资涨了不少，达到了我的预期，是我比较满意的一点。</p><h5 id="电子音乐方面："><a href="#电子音乐方面：" class="headerlink" title="电子音乐方面："></a>电子音乐方面：</h5><p>一年前听电子音乐可能更多的是为了娱乐，但是今年我已经把它当成一种艺术来看待，当然对待艺术就不能娱乐至死，而应该严谨，严肃的去听。</p><h5 id="生活方面："><a href="#生活方面：" class="headerlink" title="生活方面："></a>生活方面：</h5><p>经历了一段无疾而终（也可能是有疾而终，问题出在自己）的感情，有点regret，我是一个比较情绪化的人，这会导致有点困扰自己，慢慢提高控制情绪的能力。</p><h5 id="明年的计划："><a href="#明年的计划：" class="headerlink" title="明年的计划："></a>明年的计划：</h5><p>希望参与开发的项目能够顺利上线，持续迭代，比较看好这个东西。</p><p>说实话现在对于技术的研究已经远远没有刚毕业时那么狂热了，可能是见得多了看问题的角度也宽泛了。技术也只是一个比较单点的东西。也可能是我的认知有限，反正还是需要持续学习。</p><p>学习电子音乐制作（或许我的狂热应该是被它给分走了一部分），Ableton live和Fl studio都已经备好了，有时间就开始搞。</p><p>在一个城市呆三年吧，再做下一步的比较大的打算，所以时间已经过去一半了，希望走好接下来的一半。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;2019年马上就要过去，然后是2020年，它同时是21世纪20年代的开端，也是博主人生中最重要的十年吧~&lt;/p&gt;
+&lt;p&gt;主要从几个方面总结一下：&lt;/p&gt;
+&lt;h5 id=&quot;工作方面：&quot;&gt;&lt;a href=&quot;#工作方面：&quot; class=&quot;headerlink&quot; title=&quot;工作
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>grpc-spring-boot-starter源码走读</title>
+    <link href="http://yoursite.com/2019/12/13/grpc-spring-boot-starter%E6%BA%90%E7%A0%81%E8%B5%B0%E8%AF%BB/"/>
+    <id>http://yoursite.com/2019/12/13/grpc-spring-boot-starter%E6%BA%90%E7%A0%81%E8%B5%B0%E8%AF%BB/</id>
+    <published>2019-12-13T02:12:40.000Z</published>
+    <updated>2019-12-13T15:02:22.060Z</updated>
+    
+    <content type="html"><![CDATA[<p>Grpc-spring-boot-starter（<a href="https://github.com/yidongnan/grpc-spring-boot-starter" target="_blank" rel="noopener">Github地址</a>）是一个用于整合Grpc与springboot的开源组件。</p><h4 id="准备知识："><a href="#准备知识：" class="headerlink" title="准备知识："></a>准备知识：</h4><h5 id="ConditionalOnMissingBean"><a href="#ConditionalOnMissingBean" class="headerlink" title="@ConditionalOnMissingBean"></a>@ConditionalOnMissingBean</h5><h5 id="ConditionalOnClass"><a href="#ConditionalOnClass" class="headerlink" title="@ConditionalOnClass"></a>@ConditionalOnClass</h5><h5 id="Conditional"><a href="#Conditional" class="headerlink" title="@Conditional"></a>@Conditional</h5><h5 id="ConditionalOnBean"><a href="#ConditionalOnBean" class="headerlink" title="@ConditionalOnBean"></a>@ConditionalOnBean</h5><p>GrpcServerFactoryAutoConfiguration.Java：用于加载Grpc的netty服务器或者InProcess服务器</p><p>1.加载shadedNetty</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// First try the shaded netty server</span><br><span class="line">/**</span><br><span class="line"> * Creates a GrpcServerFactory using the shaded netty. This is the recommended default for gRPC.</span><br><span class="line"> *</span><br><span class="line"> * @param properties The properties used to configure the server.</span><br><span class="line"> * @param serviceDiscoverer The discoverer used to identify the services that should be served.</span><br><span class="line"> * @param serverConfigurers The server configurers that contain additional configuration for the server.</span><br><span class="line"> * @return The shadedNettyGrpcServerFactory bean.</span><br><span class="line"> */</span><br><span class="line">@ConditionalOnClass(name = &#123;&quot;io.grpc.netty.shaded.io.netty.channel.Channel&quot;,</span><br><span class="line">        &quot;io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder&quot;&#125;)</span><br><span class="line">@Conditional(ConditionalOnInterprocessServer.class)</span><br><span class="line">@Bean</span><br><span class="line">public ShadedNettyGrpcServerFactory shadedNettyGrpcServerFactory(final GrpcServerProperties properties,</span><br><span class="line">        final GrpcServiceDiscoverer serviceDiscoverer, final List&lt;GrpcServerConfigurer&gt; serverConfigurers) &#123;</span><br><span class="line">    final ShadedNettyGrpcServerFactory factory = new ShadedNettyGrpcServerFactory(properties, serverConfigurers);</span><br><span class="line">    for (final GrpcServiceDefinition service : serviceDiscoverer.findGrpcServices()) &#123;</span><br><span class="line">        factory.addService(service);</span><br><span class="line">    &#125;</span><br><span class="line">    return factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>2.加载非shadedNetty</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@ConditionalOnMissingBean(ShadedNettyGrpcServerFactory.class)</span><br><span class="line">@Conditional(ConditionalOnInterprocessServer.class)</span><br><span class="line">@ConditionalOnClass(name = &#123;&quot;io.netty.channel.Channel&quot;, &quot;io.grpc.netty.NettyServerBuilder&quot;&#125;)</span><br><span class="line">@Bean</span><br><span class="line">public NettyGrpcServerFactory nettyGrpcServerFactory(final GrpcServerProperties properties,</span><br><span class="line">        final GrpcServiceDiscoverer serviceDiscoverer, final List&lt;GrpcServerConfigurer&gt; serverConfigurers) &#123;</span><br><span class="line">    final NettyGrpcServerFactory factory = new NettyGrpcServerFactory(properties, serverConfigurers);</span><br><span class="line">    for (final GrpcServiceDefinition service : serviceDiscoverer.findGrpcServices()) &#123;</span><br><span class="line">        factory.addService(service);</span><br><span class="line">    &#125;</span><br><span class="line">    return factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>3.加载inProcess Netty server(进程内服务器)</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@ConditionalOnProperty(prefix = &quot;grpc.server&quot;, name = &quot;in-process-name&quot;)</span><br><span class="line">@Bean</span><br><span class="line">public InProcessGrpcServerFactory inProcessGrpcServerFactory(final GrpcServerProperties properties,</span><br><span class="line">        final GrpcServiceDiscoverer serviceDiscoverer) &#123;</span><br><span class="line">    final InProcessGrpcServerFactory factory = new InProcessGrpcServerFactory(properties);</span><br><span class="line">    for (final GrpcServiceDefinition service : serviceDiscoverer.findGrpcServices()) &#123;</span><br><span class="line">        factory.addService(service);</span><br><span class="line">    &#125;</span><br><span class="line">    return factory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Grpc-spring-boot-starter（&lt;a href=&quot;https://github.com/yidongnan/grpc-spring-boot-starter&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Github地址&lt;/a&gt;）是一个用
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>对nginx的一些研究</title>
