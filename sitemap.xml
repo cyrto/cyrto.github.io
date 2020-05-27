@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/03/23/zookeeper%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98-md/</loc>
+    
+    <lastmod>2020-05-27T11:52:23.355Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2020/05/27/SpringBoot-Mybatis-plus%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E6%95%B4%E5%90%88/</loc>
     
-    <lastmod>2020-05-27T11:48:49.446Z</lastmod>
+    <lastmod>2020-05-27T11:52:23.291Z</lastmod>
     
   </url>
   
@@ -12,13 +19,6 @@
     <loc>http://yoursite.com/2019/12/05/%E5%AF%B9nginx%E7%9A%84%E4%B8%80%E4%BA%9B%E7%A0%94%E7%A9%B6/</loc>
     
     <lastmod>2020-05-04T02:17:52.348Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2020/03/23/zookeeper%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98-md/</loc>
-    
-    <lastmod>2020-03-23T09:42:12.156Z</lastmod>
     
   </url>
   
