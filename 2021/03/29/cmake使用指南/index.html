@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="dark">
+    <title> Cmake使用指南 | CYRTO&#39;s Blog</title>
+    
+    
+    
+    <link rel="stylesheet" href="/sass/main.min.4e90cee935c47394b47f9cb7ffe8e3ffab18b88d82fea203918cc3f92eec5eb2.css">
+</head>
+
+    <body class="dark">
+        <nav class="navbar">
+    <div class="container">
+        <div class="flex">
+            <div>
+                <a class="brand" href="/">
+                    
+                    <span class="emoji">
+                        👻
+                    </span>
+                    
+                    CYRTO&#39;s Blog
+                    </a>
+            </div>
+            <div class="flex">
+                
+                <a href="/2021">2021</a>
+                
+                <a href="/about">About</a>
+                
+                <a href="/2021">Articles</a>
+                
+                <button id="dark-mode-button"></button>
+            </div>
+            </div>
+    </div>
+</nav>
+        <main>
+            
+
+<div class="container">
+    <article>
+        <header class="article-header">
+            <div class="thumb">
+                <div>
+                    <h1>Cmake使用指南</h1>
+                    <div class="post-meta">
+                        <div>
+                            By  on <time>March 29, 2021</time>
+                        </div>
+                        <div class="tags">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </article>
+
+    <div class="article-post">
+    <h4 id="cmake">Cmake</h4>
+<p>CMake是个一个开源的跨平台自动化建构系统，用来管理软件建置的程序，并不依赖于某特定编译器，并可支持多层目录、多个应用程序与多个库。 它用配置文件控制建构过程的方式和Unix的make相似，只是CMake的配置文件取名为CMakeLists.txt</p>
+<p>Linux上可以方便的支持Cmake，但是在Windows上需要额外的配置才能使用，而且Windows上的使用相对于Linux而言需要不少的人工配置，较为繁琐，在Windows的IDE上，使用MSVC的Visual Studio在2019版开始支持Cmake，Clion一直支持。</p>
+<p>因为windows的配置比较繁琐，所以在开始构建时，最好在cmakeList.txt中加上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">set<span class="o">(</span>xxx_DEBUG ON<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>该命令的作用是开启cmake构建过程中的DEBUG级别的日志，方便定位问题，比如需要在windows引入boost库，但是一直报错，可以开启相关日志进行问题定位。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">set<span class="o">(</span>Boost_DEBUG ON<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="find_package">find_package</h4>
+<p>find_package指令会让cmake用其Findxxx.cmake文件对某一个依赖进行查找并且引入
+比如</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">find_package<span class="o">(</span>Boost 1.66.0 REQUIRED COMPONENTS system program_options<span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>会使用cmake安装目录下的FindBoost.cmake文件中的配置进行包查找</p>
+<blockquote>
+<p>Clion自带的cmake，其目录下的Findxxx.cmake文件位置为：D:\JetBrains\CLion 2020.3.2\bin\cmake\win\share\cmake-3.17\Modules
+可以类比去寻找</p>
+</blockquote>
+<h4 id="处理报错">处理报错</h4>
+<p>开启DEBUG日志后可以显示错误日志栈</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2045 <span class="o">]</span> Searching <span class="k">for</span> SYSTEM_LIBRARY_RELEASE: boost_system-mgw8-mt-1_75<span class="p">;</span>boost_system-mgw8-mt<span class="p">;</span>boost_system-mgw8-mt<span class="p">;</span>boost_system-mt-1_75<span class="p">;</span>boost_system-mt<span class="p">;</span>boost_system-mt<span class="p">;</span>boost_system-mt<span class="p">;</span>boost_system
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2100 <span class="o">]</span> Searching <span class="k">for</span> SYSTEM_LIBRARY_DEBUG: boost_system-mgw8-mt-d-1_75<span class="p">;</span>boost_system-mgw8-mt-d<span class="p">;</span>boost_system-mgw8-mt-d<span class="p">;</span>boost_system-mt-d-1_75<span class="p">;</span>boost_system-mt-d<span class="p">;</span>boost_system-mt-d<span class="p">;</span>boost_system-mt<span class="p">;</span>boost_system
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2045 <span class="o">]</span> Searching <span class="k">for</span> PROGRAM_OPTIONS_LIBRARY_RELEASE: boost_program_options-mgw8-mt-1_75<span class="p">;</span>boost_program_options-mgw8-mt<span class="p">;</span>boost_program_options-mgw8-mt<span class="p">;</span>boost_program_options-mt-1_75<span class="p">;</span>boost_program_options-mt<span class="p">;</span>boost_program_options-mt<span class="p">;</span>boost_program_options-mt<span class="p">;</span>boost_program_options
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2100 <span class="o">]</span> Searching <span class="k">for</span> PROGRAM_OPTIONS_LIBRARY_DEBUG: boost_program_options-mgw8-mt-d-1_75<span class="p">;</span>boost_program_options-mgw8-mt-d<span class="p">;</span>boost_program_options-mgw8-mt-d<span class="p">;</span>boost_program_options-mt-d-1_75<span class="p">;</span>boost_program_options-mt-d<span class="p">;</span>boost_program_options-mt-d<span class="p">;</span>boost_program_options-mt<span class="p">;</span>boost_program_options
+CMake Error at D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindPackageHandleStandardArgs.cmake:164 <span class="o">(</span>message<span class="o">)</span>:
+Could NOT find Boost <span class="o">(</span>missing: system program_options<span class="o">)</span> <span class="o">(</span>found suitable
+version <span class="s2">&#34;1.75.0&#34;</span>, minimum required is <span class="s2">&#34;1.66.0&#34;</span><span class="o">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>如上面的错误，显示无法找到Boost的system和program_options的组件，但其实已经在cmake的启动命令上添加了Boost_INCLUDE_DIR和Boost_LIBRARIES
+为什么还会报错呢？随后找到一篇StackOverflow上的问答：https://stackoverflow.com/questions/57870032/cmake-v3-15-3-cannot-find-boost-v1-71-0
+这一篇问答描述了一个步骤：需要手动去编译出windows上可以用的.lib文件 ，但其实从日志上可以看到，需要的是linux平台下的.a库文件，所以问题就在这，寻找的库文件类型不匹配，
+其实可以通过配置相关参数，在windows上编译出linux上的.a库文件，这样下来问题就可以解决了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-shell" data-lang="shell">-- The CXX compiler identification is GNU 8.1.0
+-- Check <span class="k">for</span> working CXX compiler: D:/Program/mingw64/bin/g++.exe
+-- Check <span class="k">for</span> working CXX compiler: D:/Program/mingw64/bin/g++.exe - works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - <span class="k">done</span>
+-- Detecting CXX compile features
+-- Detecting CXX compile features - <span class="k">done</span>
+-- Looking <span class="k">for</span> C++ include pthread.h
+-- Looking <span class="k">for</span> C++ include pthread.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Check <span class="k">if</span> compiler accepts -pthread
+-- Check <span class="k">if</span> compiler accepts -pthread - yes
+-- Found Threads: TRUE  
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1487 <span class="o">]</span> <span class="nv">_boost_TEST_VERSIONS</span> <span class="o">=</span> <span class="s2">&#34;1.73.0;1.73;1.72.0;1.72;1.71.0;1.71;1.70.0;1.70;1.69.0;1.69;1.68.0;1.68;1.67.0;1.67;1.66.0;1.66&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1488 <span class="o">]</span> <span class="nv">Boost_USE_MULTITHREADED</span> <span class="o">=</span> <span class="s2">&#34;TRUE&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1489 <span class="o">]</span> <span class="nv">Boost_USE_STATIC_LIBS</span> <span class="o">=</span> <span class="s2">&#34;ON&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1490 <span class="o">]</span> <span class="nv">Boost_USE_STATIC_RUNTIME</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1491 <span class="o">]</span> <span class="nv">Boost_ADDITIONAL_VERSIONS</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1492 <span class="o">]</span> <span class="nv">Boost_NO_SYSTEM_PATHS</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1524 <span class="o">]</span> <span class="nv">BOOST_ROOT</span> <span class="o">=</span> <span class="s2">&#34;E:\Program\cpp\MinGW&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1525 <span class="o">]</span> ENV<span class="o">{</span>BOOST_ROOT<span class="o">}</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1526 <span class="o">]</span> <span class="nv">BOOST_INCLUDEDIR</span> <span class="o">=</span> <span class="s2">&#34;E:\Program\cpp\MinGW\include\boost&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1527 <span class="o">]</span> ENV<span class="o">{</span>BOOST_INCLUDEDIR<span class="o">}</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1528 <span class="o">]</span> <span class="nv">BOOST_LIBRARYDIR</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1529 <span class="o">]</span> ENV<span class="o">{</span>BOOST_LIBRARYDIR<span class="o">}</span> <span class="o">=</span> &lt;unset&gt;
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1601 <span class="o">]</span> <span class="nv">_boost_INCLUDE_SEARCH_DIRS</span> <span class="o">=</span> <span class="s2">&#34;E:\Program\cpp\MinGW\include\boost;E:\Program\cpp\MinGW/include;E:\Program\cpp\MinGW;PATHS;C:/boost/include;C:/boost;/sw/local/include&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1602 <span class="o">]</span> <span class="nv">_boost_PATH_SUFFIXES</span> <span class="o">=</span> <span class="s2">&#34;boost-1_73_0;boost_1_73_0;boost/boost-1_73_0;boost/boost_1_73_0;boost-1_73;boost_1_73;boost/boost-1_73;boost/boost_1_73;boost-1_72_0;boost_1_72_0;boost/boost-1_72_0;boost/boost_1_72_0;boost-1_72;boost_1_72;boost/boost-1_72;boost/boost_1_72;boost-1_71_0;boost_1_71_0;boost/boost-1_71_0;boost/boost_1_71_0;boost-1_71;boost_1_71;boost/boost-1_71;boost/boost_1_71;boost-1_70_0;boost_1_70_0;boost/boost-1_70_0;boost/boost_1_70_0;boost-1_70;boost_1_70;boost/boost-1_70;boost/boost_1_70;boost-1_69_0;boost_1_69_0;boost/boost-1_69_0;boost/boost_1_69_0;boost-1_69;boost_1_69;boost/boost-1_69;boost/boost_1_69;boost-1_68_0;boost_1_68_0;boost/boost-1_68_0;boost/boost_1_68_0;boost-1_68;boost_1_68;boost/boost-1_68;boost/boost_1_68;boost-1_67_0;boost_1_67_0;boost/boost-1_67_0;boost/boost_1_67_0;boost-1_67;boost_1_67;boost/boost-1_67;boost/boost_1_67;boost-1_66_0;boost_1_66_0;boost/boost-1_66_0;boost/boost_1_66_0;boost-1_66;boost_1_66;boost/boost-1_66;boost/boost_1_66&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1617 <span class="o">]</span> location of version.hpp: E:/Program/cpp/MinGW/include/boost/version.hpp
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1657 <span class="o">]</span> <span class="nv">Boost_VERSION</span> <span class="o">=</span> <span class="s2">&#34;107100&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1658 <span class="o">]</span> <span class="nv">Boost_VERSION_STRING</span> <span class="o">=</span> <span class="s2">&#34;1.71.0&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1659 <span class="o">]</span> <span class="nv">Boost_VERSION_MACRO</span> <span class="o">=</span> <span class="s2">&#34;107100&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1660 <span class="o">]</span> <span class="nv">Boost_VERSION_MAJOR</span> <span class="o">=</span> <span class="s2">&#34;1&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1661 <span class="o">]</span> <span class="nv">Boost_VERSION_MINOR</span> <span class="o">=</span> <span class="s2">&#34;71&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1662 <span class="o">]</span> <span class="nv">Boost_VERSION_PATCH</span> <span class="o">=</span> <span class="s2">&#34;0&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1663 <span class="o">]</span> <span class="nv">Boost_VERSION_COUNT</span> <span class="o">=</span> <span class="s2">&#34;3&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1680 <span class="o">]</span> <span class="nv">Boost_LIB_PREFIX</span> <span class="o">=</span> <span class="s2">&#34;lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1681 <span class="o">]</span> <span class="nv">Boost_NAMESPACE</span> <span class="o">=</span> <span class="s2">&#34;boost&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:797 <span class="o">]</span> <span class="nv">_boost_COMPILER</span> <span class="o">=</span> <span class="s2">&#34;-mgw81&#34;</span> <span class="o">(</span>guessed<span class="o">)</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1717 <span class="o">]</span> <span class="nv">_boost_MULTITHREADED</span> <span class="o">=</span> <span class="s2">&#34;-mt&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1794 <span class="o">]</span> <span class="nv">_boost_ARCHITECTURE_TAG</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="o">(</span>detected<span class="o">)</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1798 <span class="o">]</span> <span class="nv">_boost_RELEASE_ABI_TAG</span> <span class="o">=</span> <span class="s2">&#34;-&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1799 <span class="o">]</span> <span class="nv">_boost_DEBUG_ABI_TAG</span> <span class="o">=</span> <span class="s2">&#34;-d&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1859 <span class="o">]</span> <span class="nv">_boost_LIBRARY_SEARCH_DIRS_RELEASE</span> <span class="o">=</span> <span class="s2">&#34;E:\Program\cpp\MinGW/lib;E:\Program\cpp\MinGW/stage/lib;E:/Program/cpp/MinGW/include/lib;E:/Program/cpp/MinGW/include/../lib;E:/Program/cpp/MinGW/include/stage/lib;PATHS;C:/boost/lib;C:/boost;/sw/local/lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:1860 <span class="o">]</span> <span class="nv">_boost_LIBRARY_SEARCH_DIRS_DEBUG</span> <span class="o">=</span> <span class="s2">&#34;E:\Program\cpp\MinGW/lib;E:\Program\cpp\MinGW/stage/lib;E:/Program/cpp/MinGW/include/lib;E:/Program/cpp/MinGW/include/../lib;E:/Program/cpp/MinGW/include/stage/lib;PATHS;C:/boost/lib;C:/boost;/sw/local/lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2045 <span class="o">]</span> Searching <span class="k">for</span> SYSTEM_LIBRARY_RELEASE: libboost_system-mgw81-mt-1_71<span class="p">;</span>libboost_system-mgw81-mt<span class="p">;</span>libboost_system-mgw81-mt<span class="p">;</span>libboost_system-mt-1_71<span class="p">;</span>libboost_system-mt<span class="p">;</span>libboost_system-mt<span class="p">;</span>libboost_system-mt<span class="p">;</span>libboost_system<span class="p">;</span>libboost_system-mgw81-mt-s-1_71<span class="p">;</span>libboost_system-mgw81-mt-s<span class="p">;</span>libboost_system-mgw81-mt-s<span class="p">;</span>libboost_system-mt-s-1_71<span class="p">;</span>libboost_system-mt-s<span class="p">;</span>libboost_system-mt-s
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:652 <span class="o">]</span> <span class="nv">Boost_LIBRARY_DIR_RELEASE</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:654 <span class="o">]</span> <span class="nv">_boost_LIBRARY_SEARCH_DIRS_RELEASE</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib;NO_DEFAULT_PATH;NO_CMAKE_FIND_ROOT_PATH&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2100 <span class="o">]</span> Searching <span class="k">for</span> SYSTEM_LIBRARY_DEBUG: libboost_system-mgw81-mt-d-1_71<span class="p">;</span>libboost_system-mgw81-mt-d<span class="p">;</span>libboost_system-mgw81-mt-d<span class="p">;</span>libboost_system-mt-d-1_71<span class="p">;</span>libboost_system-mt-d<span class="p">;</span>libboost_system-mt-d<span class="p">;</span>libboost_system-mt<span class="p">;</span>libboost_system<span class="p">;</span>libboost_system-mgw81-mt-s-d-1_71<span class="p">;</span>libboost_system-mgw81-mt-s-d<span class="p">;</span>libboost_system-mgw81-mt-s-d<span class="p">;</span>libboost_system-mt-s-d-1_71<span class="p">;</span>libboost_system-mt-s-d<span class="p">;</span>libboost_system-mt-s-d
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:652 <span class="o">]</span> <span class="nv">Boost_LIBRARY_DIR_DEBUG</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:654 <span class="o">]</span> <span class="nv">_boost_LIBRARY_SEARCH_DIRS_DEBUG</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib;NO_DEFAULT_PATH;NO_CMAKE_FIND_ROOT_PATH&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2045 <span class="o">]</span> Searching <span class="k">for</span> PROGRAM_OPTIONS_LIBRARY_RELEASE: libboost_program_options-mgw81-mt-1_71<span class="p">;</span>libboost_program_options-mgw81-mt<span class="p">;</span>libboost_program_options-mgw81-mt<span class="p">;</span>libboost_program_options-mt-1_71<span class="p">;</span>libboost_program_options-mt<span class="p">;</span>libboost_program_options-mt<span class="p">;</span>libboost_program_options-mt<span class="p">;</span>libboost_program_options<span class="p">;</span>libboost_program_options-mgw81-mt-s-1_71<span class="p">;</span>libboost_program_options-mgw81-mt-s<span class="p">;</span>libboost_program_options-mgw81-mt-s<span class="p">;</span>libboost_program_options-mt-s-1_71<span class="p">;</span>libboost_program_options-mt-s<span class="p">;</span>libboost_program_options-mt-s
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:652 <span class="o">]</span> <span class="nv">Boost_LIBRARY_DIR_RELEASE</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:654 <span class="o">]</span> <span class="nv">_boost_LIBRARY_SEARCH_DIRS_RELEASE</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib;NO_DEFAULT_PATH;NO_CMAKE_FIND_ROOT_PATH&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2100 <span class="o">]</span> Searching <span class="k">for</span> PROGRAM_OPTIONS_LIBRARY_DEBUG: libboost_program_options-mgw81-mt-d-1_71<span class="p">;</span>libboost_program_options-mgw81-mt-d<span class="p">;</span>libboost_program_options-mgw81-mt-d<span class="p">;</span>libboost_program_options-mt-d-1_71<span class="p">;</span>libboost_program_options-mt-d<span class="p">;</span>libboost_program_options-mt-d<span class="p">;</span>libboost_program_options-mt<span class="p">;</span>libboost_program_options<span class="p">;</span>libboost_program_options-mgw81-mt-s-d-1_71<span class="p">;</span>libboost_program_options-mgw81-mt-s-d<span class="p">;</span>libboost_program_options-mgw81-mt-s-d<span class="p">;</span>libboost_program_options-mt-s-d-1_71<span class="p">;</span>libboost_program_options-mt-s-d<span class="p">;</span>libboost_program_options-mt-s-d
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:652 <span class="o">]</span> <span class="nv">Boost_LIBRARY_DIR_DEBUG</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib&#34;</span>
+-- <span class="o">[</span> D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:654 <span class="o">]</span> <span class="nv">_boost_LIBRARY_SEARCH_DIRS_DEBUG</span> <span class="o">=</span> <span class="s2">&#34;E:/Program/cpp/MinGW/lib;NO_DEFAULT_PATH;NO_CMAKE_FIND_ROOT_PATH&#34;</span>
+-- Found Boost: E:/Program/cpp/MinGW/include <span class="o">(</span>found suitable version <span class="s2">&#34;1.71.0&#34;</span>, minimum required is <span class="s2">&#34;1.66.0&#34;</span><span class="o">)</span> found components: system program_options 
+-- Found OpenSSL: E:/Program/cpp/OpenSSL-Win64/lib/libcrypto.lib <span class="o">(</span>found suitable version <span class="s2">&#34;1.1.0i&#34;</span>, minimum required is <span class="s2">&#34;1.1.0&#34;</span><span class="o">)</span>  
+-- Configuring <span class="k">done</span>
+-- Generating <span class="k">done</span>
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    MYSQL_INCLUDE_DIR
+    MYSQL_LIBRARIES
+</code></pre></td></tr></table>
+</div>
+</div><p>cmake构建成功的日志，其中清晰的打印出了BOOST_ROOT，BOOST_INCLUDEDIR，BOOST_LIBRARYDIR等关键参数的值和是否设置状态，可以方便排查问题</p>
+<h4 id="简便方法">简便方法</h4>
+<p><a href="https://nuwen.net/mingw.html">https://nuwen.net/mingw.html</a>
+可以下载已经编译安装好的mingw，自带了编译的boost，无需自己再编译。</p>
+
+    </div>
+</div>
+
+<div class="container">
+    
+    <nav class="flex container suggested">
+        
+        <a rel="prev" href="/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" title="Previous post (older)">
+            <span>Previous</span>
+            Hugo使用指南
+            </a>
+        
+        
+        
+    </nav>
+    
+</div>
+</main>
+
+
+        </main>
+        <footer class="footer flex">
+    <section class="container">
+        <nav class="footer-links">
+            
+            <a href="/index.xml">RSS</a>
+            
+        </nav>
+    </section>
+    
+    <script async src="/js/features.min.a94f58a30ad2560de728e080d87f75c60cf806fd1b3d5f4815f1a1a02c0d1859.js"></script>
+</footer>
+    </body>
+</html>

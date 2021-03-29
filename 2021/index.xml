@@ -6,7 +6,24 @@
     <description>Recent content in 2021s on CYRTO&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Mar 2021 10:25:28 +0800</lastBuildDate><atom:link href="https://example.com/2021/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 29 Mar 2021 11:21:38 +0800</lastBuildDate><atom:link href="https://example.com/2021/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cmake使用指南</title>
+      <link>https://example.com/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Mon, 29 Mar 2021 11:21:38 +0800</pubDate>
+      
+      <guid>https://example.com/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>Cmake CMake是个一个开源的跨平台自动化建构系统，用来管理软件建置的程序，并不依赖于某特定编译器，并可支持多层目录、多个应用程序与多个库。 它用配置文件控制建构过程的方式和Unix的make相似，只是CMake的配置文件取名为CMakeLists.txt
+Linux上可以方便的支持Cmake，但是在Windows上需要额外的配置才能使用，而且Windows上的使用相对于Linux而言需要不少的人工配置，较为繁琐，在Windows的IDE上，使用MSVC的Visual Studio在2019版开始支持Cmake，Clion一直支持。
+因为windows的配置比较繁琐，所以在开始构建时，最好在cmakeList.txt中加上
+1  set(xxx_DEBUG ON)   该命令的作用是开启cmake构建过程中的DEBUG级别的日志，方便定位问题，比如需要在windows引入boost库，但是一直报错，可以开启相关日志进行问题定位。
+1  set(Boost_DEBUG ON)   find_package find_package指令会让cmake用其Findxxx.cmake文件对某一个依赖进行查找并且引入 比如
+1  find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options)   会使用cmake安装目录下的FindBoost.cmake文件中的配置进行包查找
+ Clion自带的cmake，其目录下的Findxxx.cmake文件位置为：D:\JetBrains\CLion 2020.3.2\bin\cmake\win\share\cmake-3.17\Modules 可以类比去寻找
+ 处理报错 开启DEBUG日志后可以显示错误日志栈
+1 2 3 4 5 6 7  -- [ D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2045 ] Searching for SYSTEM_LIBRARY_RELEASE: boost_system-mgw8-mt-1_75;boost_system-mgw8-mt;boost_system-mgw8-mt;boost_system-mt-1_75;boost_system-mt;boost_system-mt;boost_system-mt;boost_system -- [ D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2100 ] Searching for SYSTEM_LIBRARY_DEBUG: boost_system-mgw8-mt-d-1_75;boost_system-mgw8-mt-d;boost_system-mgw8-mt-d;boost_system-mt-d-1_75;boost_system-mt-d;boost_system-mt-d;boost_system-mt;boost_system -- [ D:/JetBrains/CLion 2020.3.2/bin/cmake/win/share/cmake-3.17/Modules/FindBoost.cmake:2045 ] Searching for PROGRAM_OPTIONS_LIBRARY_RELEASE: boost_program_options-mgw8-mt-1_75;boost_program_options-mgw8-mt;boost_program_options-mgw8-mt;boost_program_options-mt-1_75;boost_program_options-mt;boost_program_options-mt;boost_program_options-mt;boost_program_options -- [ D:/JetBrains/CLion 2020.</description>
+    </item>
+    
     <item>
       <title>Hugo使用指南</title>
       <link>https://example.com/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
