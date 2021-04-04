@@ -2,17 +2,84 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>2021s on CYRTO&#39;s Blog</title>
-    <link>https://example.com/2021/</link>
+    <link>https://cyrto.github.io/2021/</link>
     <description>Recent content in 2021s on CYRTO&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 29 Mar 2021 11:21:38 +0800</lastBuildDate><atom:link href="https://example.com/2021/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Apr 2021 16:00:58 +0800</lastBuildDate><atom:link href="https://cyrto.github.io/2021/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>让Golang应用作为Windows服务运行</title>
+      <link>https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/</link>
+      <pubDate>Sun, 04 Apr 2021 16:00:58 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/</guid>
+      <description>Linux下可以使用systemd或者第三方的进程管理工具如supervisor，让某个应用以deamon进程的方式运行在后台，如果应用发生了异常退出后，可以自动重启
+windows同样可以这样做，那就是将该应用程序注册成windows服务，比如用golang写了一个http api server，想让它运行在后台，同时又需要支持异常退出重启
+就可以这样做。
+相关库和工具： 官方的windows服务相关的包：golang.org/x/sys/windows
+Github：
+ github.com/chai2010/winsvc github.com/kardianos/service github.com/billgraziano/go-windows-svc  这里我们采用的是chai2010开源的github.com/chai2010/winsvc
+使用方法：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125  package main import ( &amp;#34;flag&amp;#34; &amp;#34;fmt&amp;#34; &amp;#34;github.</description>
+    </item>
+    
+    <item>
+      <title>Windows下编译Godot</title>
+      <link>https://cyrto.github.io/2021/04/03/windows%E4%B8%8B%E7%BC%96%E8%AF%91godot/</link>
+      <pubDate>Sat, 03 Apr 2021 09:51:46 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/04/03/windows%E4%B8%8B%E7%BC%96%E8%AF%91godot/</guid>
+      <description>Godot是一款多功能、跨平台的2D/3D开源游戏引擎。可运行于Windows、macOS、Linux等多种操作系统，创建的游戏则可运行于PC、Android、iOS和HTML5等平台运行， 由阿根廷Juan Linietsky和Ariel Manzur创立。
+Github地址： https://github.com/godotengine/godot
+官网地址：https://godotengine.org
+开始编译 必备环境：
+ Visual Studio Community MinGW-w64 Python 3.5+ SCons 3.0 （可选的）yasm（for WebM SIMD optimizations）  Scons这个工具比较小众，可以用SCoop或者pip比较方便的进行安装
+1 2 3  scoop install scons # 或者 pip install scons   安装Scons之后，可以直接进行编译
+1 2 3  scons platform=windows #带上-j参数，后面的数据表示开启多核编译，如果是8核机器，可以加上 -j8，可以大大加快编译速度 scons -j8 platform=windows   机器CPU是8核的i7-10875H，经测试开启8核编译，编译时间只需要3-4分钟，还在可以接受的范围。 编译完成后在bin文件夹下就可以找到windows的执行文件
+参考资料：
+ https://docs.godotengine.org/en/latest/development/compiling/compiling_for_windows.html#requirements
+ </description>
+    </item>
+    
+    <item>
+      <title>Trade相关名词解释</title>
+      <link>https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</link>
+      <pubDate>Fri, 02 Apr 2021 10:58:47 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</guid>
+      <description>broker: 证券经纪商，代理商
+交易 ask：卖家愿意出的最低价
+bid：投标，是买家愿意出的最高价
+maker：挂单
+taker：吃单
+期权 long put：购买认沽（看跌）期权
+short put：卖出认沽（看跌）期权
+long call：购买认购（看涨）期权
+short call：卖出认购（看涨）期权
+参考资料：
+ https://www.interactivebrokers.com/en/home.php
+ </description>
+    </item>
+    
+    <item>
+      <title>Systemd使用指南</title>
+      <link>https://cyrto.github.io/2021/03/31/systemd%E7%AD%89%E8%BF%9B%E7%A8%8B%E5%AE%88%E6%8A%A4%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Wed, 31 Mar 2021 19:53:28 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/03/31/systemd%E7%AD%89%E8%BF%9B%E7%A8%8B%E5%AE%88%E6%8A%A4%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>systemd 是一个 Linux 系统基础组件的集合，提供了一个系统和服务管理器，运行为 PID 1 并负责启动其它程序。功能包括：支持并行化任务；同时采用 socket 式与 D-Bus 总线式激活服务；按需启动守护进程（daemon）；利用 Linux 的 cgroups 监视进程；支持快照和系统恢复；维护挂载点和自动挂载点；各服务间基于依赖关系进行精密控制。systemd 支持 SysV 和 LSB 初始脚本，可以替代 sysvinit。除此之外，功能还包括日志进程、控制基础系统配置，维护登陆用户列表以及系统账户、运行时目录和设置，可以运行容器和虚拟机，可以简单的管理网络配置、网络时间同步、日志转发和名称解析等。 由Lennart Poettering创建
+配置文件 systemd的配置文件是.service为后缀的文件，默认有三个文件夹的位置，优先级从低到高依次排列
+ /lib/systemd/system /run/systemd/system /etc/systemd/system  示例：用systemd部署golang应用 在/etc/systemd/system目录下新建 xxxgoserver.service文件，写入如下内容
+1 2 3 4 5 6 7 8 9 10  [Unit] Description=Systemd Test After=network.target [Service] User=nobody # Execute `systemctl daemon-reload` after ExecStart= is changed. ExecStart=/usr/local/bin/server -e beta [Install] WantedBy=multi-user.target   随后执行：systemctl start xxxgoserver 即可启动服务
+参考资料</description>
+    </item>
+    
     <item>
       <title>Cmake使用指南</title>
-      <link>https://example.com/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <link>https://cyrto.github.io/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Mon, 29 Mar 2021 11:21:38 +0800</pubDate>
       
-      <guid>https://example.com/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <guid>https://cyrto.github.io/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
       <description>Cmake CMake是个一个开源的跨平台自动化建构系统，用来管理软件建置的程序，并不依赖于某特定编译器，并可支持多层目录、多个应用程序与多个库。 它用配置文件控制建构过程的方式和Unix的make相似，只是CMake的配置文件取名为CMakeLists.txt
 Linux上可以方便的支持Cmake，但是在Windows上需要额外的配置才能使用，而且Windows上的使用相对于Linux而言需要不少的人工配置，较为繁琐，在Windows的IDE上，使用MSVC的Visual Studio在2019版开始支持Cmake，Clion一直支持。
 因为windows的配置比较繁琐，所以在开始构建时，最好在cmakeList.txt中加上
@@ -26,10 +93,10 @@ Linux上可以方便的支持Cmake，但是在Windows上需要额外的配置才
     
     <item>
       <title>Hugo使用指南</title>
-      <link>https://example.com/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <link>https://cyrto.github.io/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Sat, 27 Mar 2021 10:25:28 +0800</pubDate>
       
-      <guid>https://example.com/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <guid>https://cyrto.github.io/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
       <description>下载与安装 参考：https://gohugo.io/getting-started/quick-start
 常用命令 创建一个站点 1  hugo new site sitename   添加一个主题 1  git submodule add add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke   发布内容 1 2  hugo new posts/newpost.md hugo new 2021/03/24/newpost2.md   启动本地服务器 1  hugo server -D   仅生成静态文件 1  hugo -D   部署到Github Pages  删除public目录 将public文件夹设置为git 子模块，并且链接到github pages的仓库  1  git submodule add -b master --force https://github.com/cyrto/cyrto.github.io.git public   重新生成public文件  1  hugo -D   推送到仓库  1  hugo -D   Git submodule的用法 删除子模块</description>
     </item>
