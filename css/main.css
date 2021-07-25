@@ -1,0 +1,74 @@
+body{
+  margin: 0;
+}
+
+.clear{
+  clear: both;
+}
+
+.nav-container{
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid gainsboro;
+}
+
+.nav-container menu{
+  margin-left: 20rem;
+}
+
+.nav-container menu a {
+  padding: 0 20px;
+}
+
+
+#content{
+  margin: 32px auto 64px;
+}
+
+.s404{
+  margin: 3rem auto;
+  text-align: center;
+}
+
+.list-page{
+  margin: 0 auto;
+  width: 60%;
+  list-style: none;
+}
+
+
+.container{
+  min-width: 20rem;
+  margin: 0 auto;
+}
+
+ul.list-page li{
+  padding: 12px;
+}
+ul.list-page li a{
+  text-decoration: none;
+  outline: none;
+  color:  rgba(107,114,128,1);
+}
+
+/*single-page*/
+#single-page{
+  width: 60%;
+  margin: 0 auto;
+}
+
+#single-page .meta {
+  font-size: 12px;
+}
+
+#single-page .pre-next {
+  margin-bottom: 64px;
+}
+#single-page .next {
+  float: right;
+}
+

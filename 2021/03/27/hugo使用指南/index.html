@@ -1,116 +1,75 @@
 <!DOCTYPE html>
-<html lang="en-us">
-    
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="theme-color" content="dark">
-    <title> Hugo使用指南 | CYRTO&#39;s Blog</title>
-    
-    
-    
-    <link rel="stylesheet" href="/sass/main.min.4e90cee935c47394b47f9cb7ffe8e3ffab18b88d82fea203918cc3f92eec5eb2.css">
-</head>
-
-    <body class="dark">
-        <nav class="navbar">
-    <div class="container">
-        <div class="flex">
-            <div>
-                <a class="brand" href="/">
-                    
-                    <span class="emoji">
-                        👻
-                    </span>
-                    
-                    CYRTO&#39;s Blog
-                    </a>
-            </div>
-            <div class="flex">
+<html><link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/typograghy.css">
+<link rel="stylesheet" href="/css/code.css"><body><header>
+    <nav>
+        <div class="nav-container">
+            <a class="logo" href="/">CYRTO's BLOG</a>
+            <menu>
                 
-                <a href="/2021">2021</a>
+                <a href="/2021">Go</a>
                 
-                <a href="/about">About</a>
+                <a href="/2021">JAVA</a>
                 
-                <a href="/2021">Articles</a>
+                <a href="/about">关于</a>
                 
-                <button id="dark-mode-button"></button>
-            </div>
-            </div>
-    </div>
-</nav>
-        <main>
-            
-
-<div class="container">
-    <article>
-        <header class="article-header">
-            <div class="thumb">
-                <div>
-                    <h1>Hugo使用指南</h1>
-                    <div class="post-meta">
-                        <div>
-                            By  on <time>March 27, 2021</time>
-                        </div>
-                        <div class="tags">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </article>
-
-    <div class="article-post">
-    <h3 id="下载与安装">下载与安装</h3>
+            </menu>
+        </div>
+    </nav>
+</header><div id="content">
+<section id="single-page">
+    <h1 id="title">Hugo使用指南</h1>
+    <p class="meta">发布于2021-03-27 | 总字数 91 </p>
+    <div>
+        <article id="content">
+            <h3 id="下载与安装">下载与安装</h3>
 <p>参考：https://gohugo.io/getting-started/quick-start</p>
 <h3 id="常用命令">常用命令</h3>
 <h4 id="创建一个站点">创建一个站点</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo new site sitename
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo new site sitename
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="添加一个主题">添加一个主题</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">git submodule add add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">git submodule add add https://github.com/theNewDynamic/gohugo-theme-ananke.git themes/ananke
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="发布内容">发布内容</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo new posts/newpost.md
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo new posts/newpost.md
 hugo new 2021/03/24/newpost2.md
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="启动本地服务器">启动本地服务器</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo server -D
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo server -D
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="仅生成静态文件">仅生成静态文件</h4>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo -D
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo -D
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="部署到github-pages">部署到Github Pages</h4>
@@ -120,10 +79,10 @@ hugo new 2021/03/24/newpost2.md
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">git submodule add -b master --force https://github.com/cyrto/cyrto.github.io.git public
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">git submodule add -b master --force https://github.com/cyrto/cyrto.github.io.git public
 </code></pre></td></tr></table>
 </div>
 </div><ol start="3">
@@ -131,10 +90,10 @@ hugo new 2021/03/24/newpost2.md
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo -D
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo -D
 </code></pre></td></tr></table>
 </div>
 </div><ol start="4">
@@ -142,20 +101,20 @@ hugo new 2021/03/24/newpost2.md
 </ol>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo -D
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo -D
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="git-submodule的用法">Git submodule的用法</h4>
 <p>删除子模块</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">git rm --cached public
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">git rm --cached public
 </code></pre></td></tr></table>
 </div>
 </div><h4 id="更换主题">更换主题</h4>
@@ -163,62 +122,51 @@ hugo new 2021/03/24/newpost2.md
 <p>添加主题：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">git submodule add -f https://github.com/WingLim/hugo-tania themes/hugo-tania
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">git submodule add -f https://github.com/WingLim/hugo-tania themes/hugo-tania
 </code></pre></td></tr></table>
 </div>
 </div><p>预览主题</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo server --buildDrafts --theme hyde  
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo server --buildDrafts --theme hyde  
 </code></pre></td></tr></table>
 </div>
 </div><p>指定主题生成静态文件</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">hugo -D --buildDrafts --theme hugo-tania
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">hugo -D --buildDrafts --theme hugo-tania
 </code></pre></td></tr></table>
 </div>
 </div>
+        </article>
     </div>
-</div>
-
-<div class="container">
-    
-    <nav class="flex container suggested">
-        
-        
-        
-        <a rel="next" href="/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" title="Next post (newer)">
-            <span>Next</span>
-            Cmake使用指南
-            </a> 
-        
-    </nav>
-    
-</div>
-</main>
-
-
-        </main>
-        <footer class="footer flex">
-    <section class="container">
-        <nav class="footer-links">
+    <section class="pre-next">
+        <div>
             
-            <a href="/index.xml">RSS</a>
             
-        </nav>
+            <a class="next" href="https://cyrto.github.io/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> Cmake使用指南 ></a>
+            
+            <div class="clear"></div>
+        </div>
     </section>
-    
-    <script async src="/js/features.min.a94f58a30ad2560de728e080d87f75c60cf806fd1b3d5f4815f1a1a02c0d1859.js"></script>
-</footer>
-    </body>
+</section>
+
+<aside id="meta">
+    <div>
+        
+        
+    </div>
+
+</aside>
+
+        </div></body>
 </html>

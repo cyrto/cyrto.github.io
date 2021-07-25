@@ -1,68 +1,42 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>https://cyrto.github.io/2021/</loc>
     <lastmod>2021-04-04T16:00:58+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/</loc>
     <lastmod>2021-04-04T16:00:58+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/</loc>
     <lastmod>2021-04-04T16:00:58+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/2021/04/03/windows%E4%B8%8B%E7%BC%96%E8%AF%91godot/</loc>
     <lastmod>2021-04-03T09:51:46+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/</loc>
     <lastmod>2021-04-02T10:58:47+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/2021/03/31/systemd%E7%AD%89%E8%BF%9B%E7%A8%8B%E5%AE%88%E6%8A%A4%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</loc>
     <lastmod>2021-03-31T19:53:28+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</loc>
     <lastmod>2021-03-29T11:21:38+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</loc>
     <lastmod>2021-03-27T10:25:28+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/about/</loc>
     <lastmod>2021-03-27T09:09:06+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/articles/</loc>
     <lastmod>2021-02-20T13:50:54+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/articles/helloworld/</loc>
     <lastmod>2021-02-20T13:50:54+08:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://cyrto.github.io/tags/</loc>
   </url>
-  
 </urlset>

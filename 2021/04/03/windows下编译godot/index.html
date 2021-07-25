@@ -1,69 +1,28 @@
 <!DOCTYPE html>
-<html lang="en-us">
-    
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="theme-color" content="dark">
-    <title> Windows下编译Godot | CYRTO&#39;s Blog</title>
-    
-    
-    
-    <link rel="stylesheet" href="/sass/main.min.4e90cee935c47394b47f9cb7ffe8e3ffab18b88d82fea203918cc3f92eec5eb2.css">
-</head>
-
-    <body class="dark">
-        <nav class="navbar">
-    <div class="container">
-        <div class="flex">
-            <div>
-                <a class="brand" href="/">
-                    
-                    <span class="emoji">
-                        👻
-                    </span>
-                    
-                    CYRTO&#39;s Blog
-                    </a>
-            </div>
-            <div class="flex">
+<html><link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/typograghy.css">
+<link rel="stylesheet" href="/css/code.css"><body><header>
+    <nav>
+        <div class="nav-container">
+            <a class="logo" href="/">CYRTO's BLOG</a>
+            <menu>
                 
-                <a href="/2021">2021</a>
+                <a href="/2021">Go</a>
                 
-                <a href="/about">About</a>
+                <a href="/2021">JAVA</a>
                 
-                <a href="/2021">Articles</a>
+                <a href="/about">关于</a>
                 
-                <button id="dark-mode-button"></button>
-            </div>
-            </div>
-    </div>
-</nav>
-        <main>
-            
-
-<div class="container">
-    <article>
-        <header class="article-header">
-            <div class="thumb">
-                <div>
-                    <h1>Windows下编译Godot</h1>
-                    <div class="post-meta">
-                        <div>
-                            By  on <time>April 03, 2021</time>
-                        </div>
-                        <div class="tags">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-    </article>
-
-    <div class="article-post">
-    <p>Godot是一款多功能、跨平台的2D/3D开源游戏引擎。可运行于Windows、macOS、Linux等多种操作系统，创建的游戏则可运行于PC、Android、iOS和HTML5等平台运行，
+            </menu>
+        </div>
+    </nav>
+</header><div id="content">
+<section id="single-page">
+    <h1 id="title">Windows下编译Godot</h1>
+    <p class="meta">发布于2021-04-03 | 总字数 48 </p>
+    <div>
+        <article id="content">
+            <p>Godot是一款多功能、跨平台的2D/3D开源游戏引擎。可运行于Windows、macOS、Linux等多种操作系统，创建的游戏则可运行于PC、Android、iOS和HTML5等平台运行，
 由阿根廷Juan Linietsky和Ariel Manzur创立。</p>
 <p>Github地址： <a href="https://github.com/godotengine/godot">https://github.com/godotengine/godot</a></p>
 <p>官网地址：https://godotengine.org</p>
@@ -79,12 +38,12 @@
 <p>Scons这个工具比较小众，可以用SCoop或者pip比较方便的进行安装</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">scoop install scons
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">scoop install scons
 <span class="c1"># 或者</span>
 pip install scons
 </code></pre></td></tr></table>
@@ -92,12 +51,12 @@ pip install scons
 </div><p>安装Scons之后，可以直接进行编译</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt">1
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span><span class="lnt">2
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-shell" data-lang="shell">scons  <span class="nv">platform</span><span class="o">=</span>windows  
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">scons  <span class="nv">platform</span><span class="o">=</span>windows  
 <span class="c1">#带上-j参数，后面的数据表示开启多核编译，如果是8核机器，可以加上 -j8，可以大大加快编译速度</span>
 scons -j8 <span class="nv">platform</span><span class="o">=</span>windows  
 </code></pre></td></tr></table>
@@ -109,42 +68,28 @@ scons -j8 <span class="nv">platform</span><span class="o">=</span>windows
 <p><a href="https://docs.godotengine.org/en/latest/development/compiling/compiling_for_windows.html#requirements">https://docs.godotengine.org/en/latest/development/compiling/compiling_for_windows.html#requirements</a></p>
 </blockquote>
 
+        </article>
     </div>
-</div>
-
-<div class="container">
-    
-    <nav class="flex container suggested">
-        
-        <a rel="prev" href="/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/" title="Previous post (older)">
-            <span>Previous</span>
-            Trade相关名词解释
-            </a>
-        
-        
-        
-        <a rel="next" href="/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/" title="Next post (newer)">
-            <span>Next</span>
-            让Golang应用作为Windows服务运行
-            </a> 
-        
-    </nav>
-    
-</div>
-</main>
-
-
-        </main>
-        <footer class="footer flex">
-    <section class="container">
-        <nav class="footer-links">
+    <section class="pre-next">
+        <div>
             
-            <a href="/index.xml">RSS</a>
+            <a class="previous" href="https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/"> &lt; Trade相关名词解释</a>
             
-        </nav>
+            
+            <a class="next" href="https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/"> 让Golang应用作为Windows服务运行 ></a>
+            
+            <div class="clear"></div>
+        </div>
     </section>
-    
-    <script async src="/js/features.min.a94f58a30ad2560de728e080d87f75c60cf806fd1b3d5f4815f1a1a02c0d1859.js"></script>
-</footer>
-    </body>
+</section>
+
+<aside id="meta">
+    <div>
+        
+        
+    </div>
+
+</aside>
+
+        </div></body>
 </html>
