@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html><link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/typograghy.css">
-<link rel="stylesheet" href="/css/code.css"><body><header>
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
     <nav>
         <div class="nav-container">
             <a class="logo" href="/">CYRTO's BLOG</a>
@@ -18,11 +22,12 @@
     </nav>
 </header><div id="content">
 <section id="single-page">
-    <h1 id="title">Cmake使用指南</h1>
-    <p class="meta">发布于2021-03-29 | 总字数 657 </p>
-    <div>
-        <article id="content">
-            <h4 id="cmake">Cmake</h4>
+    <section class="main">
+        <h1 id="title">Cmake使用指南</h1>
+        <p class="meta">发布于2021-03-29 | 总字数 657 </p>
+        <div>
+            <article id="content">
+                <h4 id="cmake">Cmake</h4>
 <p>CMake是个一个开源的跨平台自动化建构系统，用来管理软件建置的程序，并不依赖于某特定编译器，并可支持多层目录、多个应用程序与多个库。 它用配置文件控制建构过程的方式和Unix的make相似，只是CMake的配置文件取名为CMakeLists.txt</p>
 <p>Linux上可以方便的支持Cmake，但是在Windows上需要额外的配置才能使用，而且Windows上的使用相对于Linux而言需要不少的人工配置，较为繁琐，在Windows的IDE上，使用MSVC的Visual Studio在2019版开始支持Cmake，Clion一直支持。</p>
 <p>因为windows的配置比较繁琐，所以在开始构建时，最好在cmakeList.txt中加上</p>
@@ -228,19 +233,35 @@ CMake Warning:
 <p><a href="https://nuwen.net/mingw.html">https://nuwen.net/mingw.html</a>
 可以下载已经编译安装好的mingw，自带了编译的boost，无需自己再编译。</p>
 
-        </article>
-    </div>
-    <section class="pre-next">
-        <div>
-            
-            <a class="previous" href="https://cyrto.github.io/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> &lt; Hugo使用指南</a>
-            
-            
-            <a class="next" href="https://cyrto.github.io/2021/03/31/systemd%E7%AD%89%E8%BF%9B%E7%A8%8B%E5%AE%88%E6%8A%A4%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> Systemd使用指南 ></a>
-            
-            <div class="clear"></div>
+            </article>
         </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/03/27/hugo%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> &lt; Hugo使用指南</a>
+                
+                
+                <a class="next" href="https://cyrto.github.io/2021/03/31/systemd%E7%AD%89%E8%BF%9B%E7%A8%8B%E5%AE%88%E6%8A%A4%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> Systemd使用指南 ></a>
+                
+                <div class="clear"></div>
+            </div>
+        </section>
     </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
 </section>
 
 <aside id="meta">

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html><link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/typograghy.css">
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
+    <nav>
+        <div class="nav-container">
+            <a class="logo" href="/">CYRTO's BLOG</a>
+            <menu>
+                
+                <a href="/2021">Go</a>
+                
+                <a href="/2021">JAVA</a>
+                
+                <a href="/about">关于</a>
+                
+            </menu>
+        </div>
+    </nav>
+</header><div id="content">
+<section id="single-page">
+    <section class="main">
+        <h1 id="title">生成对抗网络GAN</h1>
+        <p class="meta">发布于2021-07-25 | 总字数 54 </p>
+        <div>
+            <article id="content">
+                <h2 id="概述">概述</h2>
+<p>生成对抗网络（GAN）是一类的机器学习框架设计由苹果工程师伊恩古德费洛和他的同事们在2014年[1]的两个神经网络比赛游戏中的彼此（在一个形式零和博弈，其中，一个代理人的收益是另一个代理人的损失）。</p>
+<p>给定一个训练集，该技术学习生成具有与训练集相同统计数据的新数据。例如，对照片进行训练的 GAN 可以生成新照片，这些照片对人类观察者来说至少是表面真实的，具有许多逼真的特征。虽然最初提出的形式生成模型的无监督学习，甘斯也被证明是有用的半监督学习，[2]全面监督学习，[3]和强化学习。[4]</p>
+<p>GAN 的核心思想是基于通过鉴别器的“间接”训练，[需要澄清]，它本身也在动态更新。[5]这基本上意味着生成器没有经过训练来最小化与特定图像的距离，而是欺骗鉴别器。这使模型能够以无监督的方式学习。</p>
+<h2 id="训练方法">训练方法</h2>
+<p>在生成网络而产生的候选人辨别网络对其进行评估。[1]比赛以数据分布的方式运作。通常，生成网络学习从潜在空间映射到感兴趣的数据分布，而判别网络将生成器生成的候选与真实数据分布区分开来。生成网络的训练目标是增加判别网络的错误率（即通过产生判别器认为未合成的新候选者（是真实数据分布的一部分）来“愚弄”判别器网络）。[1] [6]</p>
+<p>已知数据集用作鉴别器的初始训练数据。训练它涉及将训练数据集中的样本呈现给它，直到它达到可接受的准确度。生成器根据它是否成功愚弄判别器进行训练。通常，生成器以从预定义的潜在空间（例如多元正态分布）中采样的随机输入作为种子。此后，由生成器合成的候选由鉴别器进行评估。独立的反向传播程序应用于两个网络，以便生成器生成更好的样本，而鉴别器在标记合成样本方面变得更加熟练。[7]当用于图像生成时，生成器通常是反卷积神经网络，判别器是卷积神经网络。</p>
+<p>GAN 经常遭受“模式崩溃”，即它们无法正确泛化，从输入数据中丢失整个模式。例如，在包含每个数字的许多样本的MNIST数据集上训练的 GAN可能会谨慎地从其输出中省略数字的子集。一些研究人员认为根本问题是一个弱判别网络，它没有注意到遗漏的模式，而其他人则将责任归咎于目标函数的错误选择。已经提出了许多解决方案。[8] GAN 的收敛性是一个开放的问题。[9]</p>
+<p>GAN 是隐式生成模型，[10]这意味着它们没有明确地对似然函数进行建模，也没有提供寻找与给定样本对应的潜在变量的方法，这与基于流的生成模型等替代方案不同。</p>
+<h2 id="相关应用">相关应用</h2>
+<h3 id="stylegan">StyleGAN</h3>
+<p>StyleGAN是Nvidia研究人员于 2018 年 12 月推出的一种新型生成对抗网络(GAN) ， 并于 2019 年 2 月提供资源。</p>
+<p>StyleGAN 依赖于 Nvidia 的CUDA软件、GPU 和 Google 的TensorFlow。</p>
+<p>StyleGAN 的第二个版本称为 StyleGAN2，于 2020 年 2 月 5 日发布。它去除了一些特征性伪影并提高了图像质量。</p>
+<p><a href="https://github.com/NVlabs/stylegan2">https://github.com/NVlabs/stylegan2</a></p>
+<p><a href="https://github.com/lucidrains/stylegan2-pytorch">https://github.com/lucidrains/stylegan2-pytorch</a></p>
+<p>案例：下面一些网站可以随机返回特定的训练数据，比如仿真的社交头像，马，化学分子结构式，艺术品等</p>
+<p><a href="https://thispersondoesnotexist.com">https://thispersondoesnotexist.com</a></p>
+<p><a href="https://thisartworkdoesnotexist.com">https://thisartworkdoesnotexist.com</a></p>
+<p><a href="https://thishorsedoesnotexist.com">https://thishorsedoesnotexist.com</a></p>
+<p><a href="https://thischemicaldoesnotexist.com/">https://thischemicaldoesnotexist.com/</a></p>
+
+            </article>
+        </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/07/%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8Cmysql%E4%BC%98%E5%8C%96/"> &lt; 如何进行mysql优化</a>
+                
+                
+                <div class="clear"></div>
+            </div>
+        </section>
+    </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概述">概述</a></li>
+    <li><a href="#训练方法">训练方法</a></li>
+    <li><a href="#相关应用">相关应用</a>
+      <ul>
+        <li><a href="#stylegan">StyleGAN</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
+</section>
+
+<aside id="meta">
+    <div>
+        
+        
+    </div>
+
+</aside>
+
+        </div></body>
+</html>

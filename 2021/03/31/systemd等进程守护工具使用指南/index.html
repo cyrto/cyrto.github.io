@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html><link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/typograghy.css">
-<link rel="stylesheet" href="/css/code.css"><body><header>
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
     <nav>
         <div class="nav-container">
             <a class="logo" href="/">CYRTO's BLOG</a>
@@ -18,11 +22,12 @@
     </nav>
 </header><div id="content">
 <section id="single-page">
-    <h1 id="title">Systemd使用指南</h1>
-    <p class="meta">发布于2021-03-31 | 总字数 67 </p>
-    <div>
-        <article id="content">
-            <p>systemd 是一个 Linux 系统基础组件的集合，提供了一个系统和服务管理器，运行为 PID 1 并负责启动其它程序。功能包括：支持并行化任务；同时采用 socket 式与 D-Bus 总线式激活服务；按需启动守护进程（daemon）；利用 Linux 的 cgroups 监视进程；支持快照和系统恢复；维护挂载点和自动挂载点；各服务间基于依赖关系进行精密控制。systemd 支持 SysV 和 LSB 初始脚本，可以替代 sysvinit。除此之外，功能还包括日志进程、控制基础系统配置，维护登陆用户列表以及系统账户、运行时目录和设置，可以运行容器和虚拟机，可以简单的管理网络配置、网络时间同步、日志转发和名称解析等。
+    <section class="main">
+        <h1 id="title">Systemd使用指南</h1>
+        <p class="meta">发布于2021-03-31 | 总字数 67 </p>
+        <div>
+            <article id="content">
+                <p>systemd 是一个 Linux 系统基础组件的集合，提供了一个系统和服务管理器，运行为 PID 1 并负责启动其它程序。功能包括：支持并行化任务；同时采用 socket 式与 D-Bus 总线式激活服务；按需启动守护进程（daemon）；利用 Linux 的 cgroups 监视进程；支持快照和系统恢复；维护挂载点和自动挂载点；各服务间基于依赖关系进行精密控制。systemd 支持 SysV 和 LSB 初始脚本，可以替代 sysvinit。除此之外，功能还包括日志进程、控制基础系统配置，维护登陆用户列表以及系统账户、运行时目录和设置，可以运行容器和虚拟机，可以简单的管理网络配置、网络时间同步、日志转发和名称解析等。
 由Lennart Poettering创建</p>
 <h3 id="配置文件">配置文件</h3>
 <p>systemd的配置文件是.service为后缀的文件，默认有三个文件夹的位置，优先级从低到高依次排列</p>
@@ -66,19 +71,36 @@
 <a href="https://wiki.archlinux.org/index.php/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">https://wiki.archlinux.org/index.php/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)</a></p>
 </blockquote>
 
-        </article>
-    </div>
-    <section class="pre-next">
-        <div>
-            
-            <a class="previous" href="https://cyrto.github.io/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> &lt; Cmake使用指南</a>
-            
-            
-            <a class="next" href="https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/"> Trade相关名词解释 ></a>
-            
-            <div class="clear"></div>
+            </article>
         </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/03/29/cmake%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"> &lt; Cmake使用指南</a>
+                
+                
+                <a class="next" href="https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/"> Trade相关名词解释 ></a>
+                
+                <div class="clear"></div>
+            </div>
+        </section>
     </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#配置文件">配置文件</a></li>
+        <li><a href="#示例用systemd部署golang应用">示例：用systemd部署golang应用</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
 </section>
 
 <aside id="meta">

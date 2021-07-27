@@ -7,13 +7,17 @@ body{
 }
 
 .nav-container{
-  max-width: 1440px;
-  margin: 0 auto;
   padding: 0 40px;
   height: 60px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid gainsboro;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background-color: white;
 }
 
 .nav-container menu{
@@ -26,7 +30,7 @@ body{
 
 
 #content{
-  margin: 32px auto 64px;
+  margin: 96px auto 64px;
 }
 
 .s404{
@@ -58,7 +62,7 @@ ul.list-page li a{
 /*single-page*/
 #single-page{
   width: 60%;
-  margin: 0 auto;
+  margin: 64px auto 0;
 }
 
 #single-page .meta {
@@ -70,5 +74,43 @@ ul.list-page li a{
 }
 #single-page .next {
   float: right;
+}
+
+aside.toc{
+  float: right;
+  position: fixed;
+  top: 96px;
+  right: 20%;
+}
+
+#single-page .main{
+  width: 72%;
+  display: inline-block;
+}
+
+#single-page h1,h2,h3,h4,h5,h6  {
+  padding-top:72px; margin-top:-72px;
+}
+
+#TableOfContents ul {
+  list-style: none;
+  text-decoration: none;
+}
+
+#TableOfContents li {
+  padding: 2px 0;
+}
+
+#TableOfContents li a{
+  font-size: 13px;
+  color: #6b7280;
+  text-decoration: none;
+}
+#TableOfContents li.active a{
+  color: #0c0a0a;
+}
+
+#TableOfContents li a:hover{
+  color: #111827;
 }
 

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html><link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/typograghy.css">
-<link rel="stylesheet" href="/css/code.css"><body><header>
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
     <nav>
         <div class="nav-container">
             <a class="logo" href="/">CYRTO's BLOG</a>
@@ -18,11 +22,12 @@
     </nav>
 </header><div id="content">
 <section id="single-page">
-    <h1 id="title">让Golang应用作为Windows服务运行</h1>
-    <p class="meta">发布于2021-04-04 | 总字数 462 </p>
-    <div>
-        <article id="content">
-            <p>Linux下可以使用systemd或者第三方的进程管理工具如supervisor，让某个应用以deamon进程的方式运行在后台，如果应用发生了异常退出后，可以自动重启</p>
+    <section class="main">
+        <h1 id="title">让Golang应用作为Windows服务运行</h1>
+        <p class="meta">发布于2021-04-04 | 总字数 462 </p>
+        <div>
+            <article id="content">
+                <p>Linux下可以使用systemd或者第三方的进程管理工具如supervisor，让某个应用以deamon进程的方式运行在后台，如果应用发生了异常退出后，可以自动重启</p>
 <p>windows同样可以这样做，那就是将该应用程序注册成windows服务，比如用golang写了一个http api server，想让它运行在后台，同时又需要支持异常退出重启</p>
 <p>就可以这样做。</p>
 <h5 id="相关库和工具">相关库和工具：</h5>
@@ -310,17 +315,35 @@ main.exe -service-install
 <p><a href="https://chai2010.cn/post/2018/window-service/">https://chai2010.cn/post/2018/window-service/</a></p>
 </blockquote>
 
-        </article>
-    </div>
-    <section class="pre-next">
-        <div>
-            
-            <a class="previous" href="https://cyrto.github.io/2021/04/03/windows%E4%B8%8B%E7%BC%96%E8%AF%91godot/"> &lt; Windows下编译Godot</a>
-            
-            
-            <div class="clear"></div>
+            </article>
         </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/04/03/windows%E4%B8%8B%E7%BC%96%E8%AF%91godot/"> &lt; Windows下编译Godot</a>
+                
+                
+                <a class="next" href="https://cyrto.github.io/2021/07/%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8Cmysql%E4%BC%98%E5%8C%96/"> 如何进行mysql优化 ></a>
+                
+                <div class="clear"></div>
+            </div>
+        </section>
     </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
 </section>
 
 <aside id="meta">

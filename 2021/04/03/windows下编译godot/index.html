@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html><link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/typograghy.css">
-<link rel="stylesheet" href="/css/code.css"><body><header>
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
     <nav>
         <div class="nav-container">
             <a class="logo" href="/">CYRTO's BLOG</a>
@@ -18,11 +22,12 @@
     </nav>
 </header><div id="content">
 <section id="single-page">
-    <h1 id="title">Windows下编译Godot</h1>
-    <p class="meta">发布于2021-04-03 | 总字数 48 </p>
-    <div>
-        <article id="content">
-            <p>Godot是一款多功能、跨平台的2D/3D开源游戏引擎。可运行于Windows、macOS、Linux等多种操作系统，创建的游戏则可运行于PC、Android、iOS和HTML5等平台运行，
+    <section class="main">
+        <h1 id="title">Windows下编译Godot</h1>
+        <p class="meta">发布于2021-04-03 | 总字数 48 </p>
+        <div>
+            <article id="content">
+                <p>Godot是一款多功能、跨平台的2D/3D开源游戏引擎。可运行于Windows、macOS、Linux等多种操作系统，创建的游戏则可运行于PC、Android、iOS和HTML5等平台运行，
 由阿根廷Juan Linietsky和Ariel Manzur创立。</p>
 <p>Github地址： <a href="https://github.com/godotengine/godot">https://github.com/godotengine/godot</a></p>
 <p>官网地址：https://godotengine.org</p>
@@ -68,19 +73,35 @@ scons -j8 <span class="nv">platform</span><span class="o">=</span>windows
 <p><a href="https://docs.godotengine.org/en/latest/development/compiling/compiling_for_windows.html#requirements">https://docs.godotengine.org/en/latest/development/compiling/compiling_for_windows.html#requirements</a></p>
 </blockquote>
 
-        </article>
-    </div>
-    <section class="pre-next">
-        <div>
-            
-            <a class="previous" href="https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/"> &lt; Trade相关名词解释</a>
-            
-            
-            <a class="next" href="https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/"> 让Golang应用作为Windows服务运行 ></a>
-            
-            <div class="clear"></div>
+            </article>
         </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/04/02/trade%E7%9B%B8%E5%85%B3%E5%90%8D%E8%AF%8D%E8%A7%A3%E9%87%8A/"> &lt; Trade相关名词解释</a>
+                
+                
+                <a class="next" href="https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/"> 让Golang应用作为Windows服务运行 ></a>
+                
+                <div class="clear"></div>
+            </div>
+        </section>
     </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
 </section>
 
 <aside id="meta">

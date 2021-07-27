@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html><link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/typograghy.css">
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
+    <nav>
+        <div class="nav-container">
+            <a class="logo" href="/">CYRTO's BLOG</a>
+            <menu>
+                
+                <a href="/2021">Go</a>
+                
+                <a href="/2021">JAVA</a>
+                
+                <a href="/about">关于</a>
+                
+            </menu>
+        </div>
+    </nav>
+</header><div id="content">
+<section id="single-page">
+    <section class="main">
+        <h1 id="title">如何进行mysql优化</h1>
+        <p class="meta">发布于2021-07-25 | 总字数 172 </p>
+        <div>
+            <article id="content">
+                <h2 id="七种join理论">七种JOIN理论</h2>
+<h2 id="什么是索引">什么是索引？</h2>
+<p>索引是一种已排序的，加快数据库查询速度的数据结构</p>
+<p>优势：提高数据检索效率，降低数据库的IO成本，降低CPU的消耗</p>
+<p>劣势：虽然提高了查询速度，但是会降低数据的更新速度，因为执行update的同时，不但要修改行数据，还要修改索引的指向</p>
+<p>结论：索引需要在业务迭代过程中不断优化，删除重建是不可避免的</p>
+<h2 id="索引的分类">索引的分类</h2>
+<ul>
+<li>
+<p>单值索引： 一个索引只包含一个列</p>
+</li>
+<li>
+<p>唯一索引： 索引列的值必须唯一 ，主键索引就是唯一索引</p>
+</li>
+<li>
+<p>复合索引：一个索引包含多个列</p>
+</li>
+<li>
+<p>覆盖索引</p>
+</li>
+<li>
+<p>聚簇索引</p>
+</li>
+<li>
+<p>非聚簇索引</p>
+</li>
+</ul>
+<h2 id="索引的结构">索引的结构</h2>
+<ul>
+<li>
+<p>B-Tree索引</p>
+</li>
+<li>
+<p>Hash索引</p>
+</li>
+<li>
+<p>Full-text索引</p>
+</li>
+<li>
+<p>R-Tree索引</p>
+</li>
+</ul>
+<h2 id="哪些情况需要建立索引">哪些情况需要建立索引？</h2>
+<p>1.主键默认自动建立唯一索引</p>
+<p>2.频繁作为查询条件的字段应该创建索引，比如银行系统的银行卡号，电信计费系统的手机号，微信的微信号</p>
+<p>3.查询中跟其他表进行关联的字段，外键关系建立索引</p>
+<p>4.查询中排序的字段，需要创建索引</p>
+<p>5.选择单值索引还是复合索引？这个要根据实际情况讨论，如果是互联网高并发的场景下，倾向于建立复合索引</p>
+<h2 id="哪些情况下不需要创建索引">哪些情况下不需要创建索引？</h2>
+<p>1.频繁更新的字段不需要创建索引</p>
+<p>2.where条件里面用不到的字段不创建索引</p>
+<p>3.状态或者标识字段一般不建立索引，比如性别（一般只有男，女，未知三个状态），是否删除的标识字段（一般只有0，1两个状态）</p>
+<blockquote>
+<p>索引的选择性：索引列不同值的数目跟索引列的总记录数的比值，这个值越大（越接近于1），说明建索引的效率就越高</p>
+</blockquote>
+<h2 id="explain分析教程">explain分析教程</h2>
+<p>explain分析sql语句的执行计划，会得到如下的字段信息</p>
+<p>id | select_type | table | type | possible_keys | key | key_len | ref | rows | Extra</p>
+<p>其中 <strong>id，type ，key ，rows，extra</strong> 是最重要的5个字段，作为后端研发人员跟DBA沟通的时候需要经常用到。</p>
+<h3 id="id">id</h3>
+<p>查询条目的标识，select查询的序列号，表示查询中执行select子句或者操作表的顺序，id相同：执行顺序由上到下，id不同：一个查询可能包含多个子查询，都有一个id，id越大的越先执行</p>
+<h3 id="select_type">select_type</h3>
+<p>查询的类型，用来区别普通查询，联合查询，子查询等复杂的查询</p>
+<ul>
+<li>
+<p>simple：简单的select查询，查询中不包含子查询和union</p>
+</li>
+<li>
+<p>primary：表示主查询，包含复杂查询的最外层查询</p>
+</li>
+<li>
+<p>subquery：表示子查询的部分</p>
+</li>
+<li>
+<p>derived： 表示衍生出来的虚表，在from列表中包含的子查询会被标记为Derived（衍生），Mysql会递归执行这些子查询，把结果放在临时表中</p>
+</li>
+<li>
+<p>union：若第二个select出现在union之后，则被标记为union，若union包含在from子句的子查询中，外层的select被标记为derived</p>
+</li>
+<li>
+<p>union result：从union表获取结果的select</p>
+</li>
+</ul>
+<h3 id="table">table</h3>
+<p>显示这一行数据是关于哪张表的</p>
+<h3 id="type">type</h3>
+<p>访问类型排列，有如下8种值，查询性能的从好到差的排列依次是：</p>
+<p><code>system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</code></p>
+<p>更详细的版本：</p>
+<p><code>system &gt; const &gt; eq_ref &gt; ref &gt; fulltext &gt; ref_or_null &gt; index_merge &gt; unique_subquery &gt; index_subquery &gt; range &gt; index &gt; ALL</code></p>
+<p><strong>最好保证查询至少达到range级别，最好能达到ref</strong></p>
+<ul>
+<li>
+<p>ALL: 全表查询，如果表数据上百万，务必要进行优化</p>
+</li>
+<li>
+<p>index：full index scan，index和all的区别是只遍历索引树，通常比all要快，因为index只读取索引文件，但是all读取硬盘的数据</p>
+</li>
+<li>
+<p>range：只检索给定范围的行，使用一个索引来选择行，key列显示了使用哪个索引，一般出现在where语句中出现了between，&lt;,&gt;,in等的查询，这种范围扫描比全表扫描要好，不用扫描全部索引</p>
+</li>
+<li>
+<p>ref： 非唯一性索引扫描，返回匹配某一个值的所有行，属于查找和扫描的混合体</p>
+</li>
+<li>
+<p>eq_ref： 唯一性索引扫描，一般出在主键索引或者唯一索引</p>
+</li>
+<li>
+<p>const：常量，一般出在主键索引或者唯一索引</p>
+</li>
+<li>
+<p>system: 跟mysql出厂的系统表有关的查询访问类型</p>
+</li>
+<li>
+<p>NULL</p>
+</li>
+</ul>
+<h3 id="possible_keys">possible_keys</h3>
+<p>显示可能应用在这张表上的索引，一个或者多个。查询涉及到的字段上若存在索引，则该索引将被列出，不一定被查询实际使用</p>
+<h3 id="key">key</h3>
+<p>实际使用的索引，如果是NULL，则没有使用索引</p>
+<h3 id="key_len">key_len</h3>
+<p>表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度，在不损失精确性的情况下，长度越短越好 ，显示索引字段的最大可能长度，并非实际使用长度，是通过表定义计算出来的，不是通过表内检索出来的</p>
+<h3 id="ref">ref</h3>
+<p>显示索引的哪一列被使用了，如果可能的话是一个常数，哪些列或者常量被用于查找索引列上的值</p>
+<h3 id="rows">rows</h3>
+<p>表示每张表有多少行被优化器查询</p>
+<h3 id="extra">extra</h3>
+<p>包含很多不适合在上述其他列显示但是十分重要的信息</p>
+<ul>
+<li>Using filesort</li>
+</ul>
+<p>说明mysql会对一个数据使用外部的索引排序，而不是按照表内的索引顺序进行排序，即Mysql无法利用索引完成的排序操作称为“文件排序”</p>
+<ul>
+<li>using temporary</li>
+</ul>
+<p>说明需要新建一个临时表，这种情况是效率比较慢的，常见于排序order by和分组查询group by</p>
+<ul>
+<li>using index</li>
+</ul>
+<p>表示对应的select操作使用了覆盖索引（Covering Index），避免访问了表的数据行，效率不错；</p>
+<p>如果同时出现using where，表明索引被用来执行索引键值的查找；</p>
+<p>如果没有出现using where，表明索引用来读取数据而非执行查找动作；</p>
+<blockquote>
+<p>覆盖索引：
+select的数据列只需要从索引中就能取得，就不必回表查询，前提是查询列要被所建的复合索引覆盖</p>
+</blockquote>
+<ul>
+<li>using where</li>
+</ul>
+<p>表示用到了where条件查询</p>
+<ul>
+<li>using join buffer</li>
+</ul>
+<p>使用了连接缓存</p>
+<ul>
+<li>impossible where</li>
+</ul>
+<p>where子句的值总是false，不能用来获取任何元组</p>
+<ul>
+<li>
+<p>select tables optimized away</p>
+</li>
+<li>
+<p>distinct</p>
+</li>
+</ul>
+
+            </article>
+        </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/04/04/%E8%AE%A9golang%E5%BA%94%E7%94%A8%E4%BD%9C%E4%B8%BAwindows%E6%9C%8D%E5%8A%A1%E8%BF%90%E8%A1%8C/"> &lt; 让Golang应用作为Windows服务运行</a>
+                
+                
+                <a class="next" href="https://cyrto.github.io/2021/07/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgan/"> 生成对抗网络GAN ></a>
+                
+                <div class="clear"></div>
+            </div>
+        </section>
+    </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#七种join理论">七种JOIN理论</a></li>
+    <li><a href="#什么是索引">什么是索引？</a></li>
+    <li><a href="#索引的分类">索引的分类</a></li>
+    <li><a href="#索引的结构">索引的结构</a></li>
+    <li><a href="#哪些情况需要建立索引">哪些情况需要建立索引？</a></li>
+    <li><a href="#哪些情况下不需要创建索引">哪些情况下不需要创建索引？</a></li>
+    <li><a href="#explain分析教程">explain分析教程</a>
+      <ul>
+        <li><a href="#id">id</a></li>
+        <li><a href="#select_type">select_type</a></li>
+        <li><a href="#table">table</a></li>
+        <li><a href="#type">type</a></li>
+        <li><a href="#possible_keys">possible_keys</a></li>
+        <li><a href="#key">key</a></li>
+        <li><a href="#key_len">key_len</a></li>
+        <li><a href="#ref">ref</a></li>
+        <li><a href="#rows">rows</a></li>
+        <li><a href="#extra">extra</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
+</section>
+
+<aside id="meta">
+    <div>
+        
+        
+    </div>
+
+</aside>
+
+        </div></body>
+</html>

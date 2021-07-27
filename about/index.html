@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html><link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/typograghy.css">
-<link rel="stylesheet" href="/css/code.css"><body><header>
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
     <nav>
         <div class="nav-container">
             <a class="logo" href="/">CYRTO's BLOG</a>
@@ -18,21 +22,30 @@
     </nav>
 </header><div id="content">
 <section id="single-page">
-    <h1 id="title">About</h1>
-    <p class="meta">发布于2021-03-27 | 总字数 2 </p>
-    <div>
-        <article id="content">
-            <p>tendency: Nihilist</p>
-
-        </article>
-    </div>
-    <section class="pre-next">
+    <section class="main">
+        <h1 id="title">About</h1>
+        <p class="meta">发布于2021-03-27 | 总字数 2 </p>
         <div>
-            
-            
-            <div class="clear"></div>
+            <article id="content">
+                <p>tendency: Nihilist</p>
+
+            </article>
         </div>
+        <section class="pre-next">
+            <div>
+                
+                
+                <div class="clear"></div>
+            </div>
+        </section>
     </section>
+    <aside class="toc">
+        <nav id="TableOfContents"></nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
 </section>
 
 <aside id="meta">
