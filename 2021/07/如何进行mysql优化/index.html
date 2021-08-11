@@ -24,16 +24,17 @@
 <section id="single-page">
     <section class="main">
         <h1 id="title">如何进行mysql优化</h1>
-        <p class="meta">发布于2021-07-25 | 总字数 172 </p>
+        <p class="meta">发布于2021-07-25 | 总字数 475 </p>
         <div>
             <article id="content">
                 <h2 id="七种join理论">七种JOIN理论</h2>
-<h2 id="什么是索引">什么是索引？</h2>
+<h2 id="索引优化">索引优化</h2>
+<h3 id="什么是索引">什么是索引？</h3>
 <p>索引是一种已排序的，加快数据库查询速度的数据结构</p>
 <p>优势：提高数据检索效率，降低数据库的IO成本，降低CPU的消耗</p>
 <p>劣势：虽然提高了查询速度，但是会降低数据的更新速度，因为执行update的同时，不但要修改行数据，还要修改索引的指向</p>
 <p>结论：索引需要在业务迭代过程中不断优化，删除重建是不可避免的</p>
-<h2 id="索引的分类">索引的分类</h2>
+<h3 id="索引的分类">索引的分类</h3>
 <ul>
 <li>
 <p>单值索引： 一个索引只包含一个列</p>
@@ -54,7 +55,7 @@
 <p>非聚簇索引</p>
 </li>
 </ul>
-<h2 id="索引的结构">索引的结构</h2>
+<h3 id="索引的结构">索引的结构</h3>
 <ul>
 <li>
 <p>B-Tree索引</p>
@@ -69,26 +70,26 @@
 <p>R-Tree索引</p>
 </li>
 </ul>
-<h2 id="哪些情况需要建立索引">哪些情况需要建立索引？</h2>
+<h3 id="哪些情况需要建立索引">哪些情况需要建立索引？</h3>
 <p>1.主键默认自动建立唯一索引</p>
 <p>2.频繁作为查询条件的字段应该创建索引，比如银行系统的银行卡号，电信计费系统的手机号，微信的微信号</p>
 <p>3.查询中跟其他表进行关联的字段，外键关系建立索引</p>
 <p>4.查询中排序的字段，需要创建索引</p>
 <p>5.选择单值索引还是复合索引？这个要根据实际情况讨论，如果是互联网高并发的场景下，倾向于建立复合索引</p>
-<h2 id="哪些情况下不需要创建索引">哪些情况下不需要创建索引？</h2>
+<h3 id="哪些情况下不需要创建索引">哪些情况下不需要创建索引？</h3>
 <p>1.频繁更新的字段不需要创建索引</p>
 <p>2.where条件里面用不到的字段不创建索引</p>
 <p>3.状态或者标识字段一般不建立索引，比如性别（一般只有男，女，未知三个状态），是否删除的标识字段（一般只有0，1两个状态）</p>
 <blockquote>
 <p>索引的选择性：索引列不同值的数目跟索引列的总记录数的比值，这个值越大（越接近于1），说明建索引的效率就越高</p>
 </blockquote>
-<h2 id="explain分析教程">explain分析教程</h2>
+<h3 id="explain分析教程">explain分析教程</h3>
 <p>explain分析sql语句的执行计划，会得到如下的字段信息</p>
 <p>id | select_type | table | type | possible_keys | key | key_len | ref | rows | Extra</p>
 <p>其中 <strong>id，type ，key ，rows，extra</strong> 是最重要的5个字段，作为后端研发人员跟DBA沟通的时候需要经常用到。</p>
-<h3 id="id">id</h3>
+<h4 id="id">id</h4>
 <p>查询条目的标识，select查询的序列号，表示查询中执行select子句或者操作表的顺序，id相同：执行顺序由上到下，id不同：一个查询可能包含多个子查询，都有一个id，id越大的越先执行</p>
-<h3 id="select_type">select_type</h3>
+<h4 id="select_type">select_type</h4>
 <p>查询的类型，用来区别普通查询，联合查询，子查询等复杂的查询</p>
 <ul>
 <li>
@@ -110,9 +111,9 @@
 <p>union result：从union表获取结果的select</p>
 </li>
 </ul>
-<h3 id="table">table</h3>
+<h4 id="table">table</h4>
 <p>显示这一行数据是关于哪张表的</p>
-<h3 id="type">type</h3>
+<h4 id="type">type</h4>
 <p>访问类型排列，有如下8种值，查询性能的从好到差的排列依次是：</p>
 <p><code>system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; ALL</code></p>
 <p>更详细的版本：</p>
@@ -144,17 +145,17 @@
 <p>NULL</p>
 </li>
 </ul>
-<h3 id="possible_keys">possible_keys</h3>
+<h4 id="possible_keys">possible_keys</h4>
 <p>显示可能应用在这张表上的索引，一个或者多个。查询涉及到的字段上若存在索引，则该索引将被列出，不一定被查询实际使用</p>
-<h3 id="key">key</h3>
+<h4 id="key">key</h4>
 <p>实际使用的索引，如果是NULL，则没有使用索引</p>
-<h3 id="key_len">key_len</h3>
+<h4 id="key_len">key_len</h4>
 <p>表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度，在不损失精确性的情况下，长度越短越好 ，显示索引字段的最大可能长度，并非实际使用长度，是通过表定义计算出来的，不是通过表内检索出来的</p>
-<h3 id="ref">ref</h3>
+<h4 id="ref">ref</h4>
 <p>显示索引的哪一列被使用了，如果可能的话是一个常数，哪些列或者常量被用于查找索引列上的值</p>
-<h3 id="rows">rows</h3>
+<h4 id="rows">rows</h4>
 <p>表示每张表有多少行被优化器查询</p>
-<h3 id="extra">extra</h3>
+<h4 id="extra">extra</h4>
 <p>包含很多不适合在上述其他列显示但是十分重要的信息</p>
 <ul>
 <li>Using filesort</li>
@@ -194,7 +195,392 @@ select的数据列只需要从索引中就能取得，就不必回表查询，�
 <p>distinct</p>
 </li>
 </ul>
-
+<h3 id="如何避免索引失效">如何避免索引失效？</h3>
+<p>1.全值匹配我最爱</p>
+<p>2.最佳左前缀法则</p>
+<p>3.不在索引列上做任何操作（计算，函数，自动或者手动类型转换），因为这样会导致全表扫描</p>
+<p>4.存储引擎不能使用索引中范围条件右边的列</p>
+<p>5.尽量使用覆盖索引（只访问索引的查询（索引列和查询列一致）），减少select *</p>
+<p>6.mysql在使用不等于( != 或者 &lt;&gt; )的时候无法使用索引会导致全表扫描</p>
+<p>7.is null，is not null无法使用索引</p>
+<p>8.like以通配符开头('%abc')会导致索引失效，全表扫描</p>
+<blockquote>
+<p>如何解决like通配符('%abc%')导致的索引失效？
+可以使用覆盖索引</p>
+</blockquote>
+<p>9.字符串不加单引号会导致索引失效</p>
+<p>10.少用or，用它来连接时索引会失效</p>
+<p>11.order by后面的字段，如果没有确定值，顺序也没有跟复合索引的顺序一致，会产生using fileSort</p>
+<p>12.Group by后面的字段，如果顺序没有跟复合索引的顺序一致，会产生using fileSort和using temporary 临时表</p>
+<h3 id="不会造成索引失效的情况">不会造成索引失效的情况？</h3>
+<p>where语句后面的查询列顺序跟复合索引的顺序没有关系，因为Mysql的执行优化器会自动转化成复合最佳左匹配的顺序，不过还是最好按照复合索引的顺序来写，避免执行优化器的转化</p>
+<h2 id="查询截取分析">查询截取分析</h2>
+<h3 id="分析步骤">分析步骤</h3>
+<p>观察 -&gt; 开启慢查询日志 -&gt; explain 分析 + 查询优化分析 -&gt; show profile查询SQL的执行细节和生命周期 -&gt; 运维经理或者DBA进行数据库参数调优</p>
+<h3 id="查询优化分析">查询优化分析</h3>
+<h4 id="小表驱动大表类似于嵌套循环">小表驱动大表：类似于嵌套循环</h4>
+<p>exist和in的优先级问题</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">B</span><span class="p">);</span><span class="w">
+</span><span class="w"></span><span class="err">当</span><span class="n">A表的数据集小于B表时</span><span class="err">，用</span><span class="n">in优于用exist</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">A</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">exist</span><span class="w"> </span><span class="p">(</span><span class="k">select</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">id</span><span class="p">);</span><span class="w">
+</span><span class="w"></span><span class="err">当</span><span class="n">A表的数据集小于B表时</span><span class="err">，用</span><span class="n">exist优于用in</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="order-by关键字优化">order by关键字优化：</h4>
+<ul>
+<li>
+<p>Order by尽量不要使用select *,  当Query的字段大小总和小于max_length_for_sort_data，会使用单路排序（改进算法），否则使用多路排序（老算法）</p>
+</li>
+<li>
+<p>尝试提高sort_buffer_size，fileSort有两种算法，多路排序和单路排序，两种算法都有可能超出sort_buffer的容量，超出之后，会创建tmp文件进行合并排序，导致多次IO，但是用单路排序算法的风险会更大一些，</p>
+</li>
+<li>
+<p>尝试提高max_length_for_sort_data,提高这个参数，会增加用单路排序的概率，如果设置太高，数据总容量超出sort_buffer_size的概率就增大</p>
+</li>
+</ul>
+<p>mysql两种排序方式：文件排序和扫描有序索引排序</p>
+<p>mysql能为排序使用相同的索引</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">key</span><span class="w"> </span><span class="nf">idx_a_b_c</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1">-- 可以使用索引
+</span><span class="c1"></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="w">
+</span><span class="w"></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="w">
+</span><span class="w"></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w">
+</span><span class="w"></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">desc</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="k">desc</span><span class="p">,</span><span class="n">c</span><span class="w"> </span><span class="k">desc</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w">
+</span><span class="w"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">c</span><span class="w">
+</span><span class="w"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w">
+</span><span class="w"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1">-- 不能使用索引
+</span><span class="c1"></span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">asc</span><span class="p">,</span><span class="n">b</span><span class="w"> </span><span class="k">desc</span><span class="p">,</span><span class="n">c</span><span class="w"> </span><span class="k">asc</span><span class="w">  </span><span class="c1">-- 排序不一致
+</span><span class="c1"></span><span class="k">where</span><span class="w"> </span><span class="n">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w">  </span><span class="c1">-- 不符合最佳左前缀，索引失效
+</span><span class="c1"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">c</span><span class="w">  </span><span class="c1">-- 中间索引字段丢失
+</span><span class="c1"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="w"> </span><span class="c1">-- d不属于索引字段
+</span><span class="c1"></span><span class="k">where</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="w"> </span><span class="c1">-- a是范围查询，范围查询后面的排序索引会失效
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="group-by关键字优化">group by关键字优化：</h4>
+<p>跟order by 的优化一致，但有如下注意的点：</p>
+<ul>
+<li>group by的实质是先排序再分组，遵照索引建的最佳左前缀</li>
+</ul>
+<h3 id="慢查询日志">慢查询日志</h3>
+<h4 id="查看是否开启慢查询日志">查看是否开启慢查询日志</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%slow_query_log%&#39;</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="开启慢查询日志">开启慢查询日志</h4>
+<p>临时开启</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="kt">set</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">slow_query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>永久生效，修改my.cnf</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="p">[</span><span class="n">mysqld</span><span class="p">]</span><span class="w">
+</span><span class="w"></span><span class="n">slow_query_log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="w"></span><span class="n">slow_query_log_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">slow</span><span class="p">.</span><span class="n">log</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="设置记录慢sql的阈值时间">设置记录慢sql的阈值时间</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">#查看
+</span><span class="c1"></span><span class="k">show</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;%long_query_time%&#39;</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1">#设置3s
+</span><span class="c1"></span><span class="kt">set</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">long_query_time</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="日志分析工具mysqldumpslow">日志分析工具mysqldumpslow</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">xxx</span><span class="o">@</span><span class="n">ubuntu</span><span class="p">:</span><span class="o">~/</span><span class="n">Desktop</span><span class="err">$</span><span class="w"> </span><span class="n">mysqldumpslow</span><span class="w"> </span><span class="o">--</span><span class="n">help</span><span class="w">
+</span><span class="w"></span><span class="k">Usage</span><span class="p">:</span><span class="w"> </span><span class="n">mysqldumpslow</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="n">OPTS</span><span class="p">...</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="n">LOGS</span><span class="p">...</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="n">Parse</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">summarize</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">MySQL</span><span class="w"> </span><span class="n">slow</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="n">log</span><span class="p">.</span><span class="w"> </span><span class="n">Options</span><span class="w"> </span><span class="n">are</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="o">--</span><span class="n">verbose</span><span class="w">    </span><span class="n">verbose</span><span class="w">
+</span><span class="w">  </span><span class="o">--</span><span class="n">debug</span><span class="w">      </span><span class="n">debug</span><span class="w">
+</span><span class="w">  </span><span class="o">--</span><span class="n">help</span><span class="w">       </span><span class="k">write</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="kt">text</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">standard</span><span class="w"> </span><span class="n">output</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="o">-</span><span class="n">v</span><span class="w">           </span><span class="n">verbose</span><span class="w">
+</span><span class="w">  </span><span class="o">-</span><span class="n">d</span><span class="w">           </span><span class="n">debug</span><span class="w">
+</span><span class="w">  </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="k">ORDER</span><span class="w">     </span><span class="n">what</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">sort</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="p">(</span><span class="n">al</span><span class="p">,</span><span class="w"> </span><span class="n">at</span><span class="p">,</span><span class="w"> </span><span class="n">ar</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">r</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">),</span><span class="w"> </span><span class="s1">&#39;at&#39;</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">default</span><span class="w">
+</span><span class="w">                </span><span class="n">al</span><span class="p">:</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="k">lock</span><span class="w"> </span><span class="kt">time</span><span class="w">
+</span><span class="w">                </span><span class="n">ar</span><span class="p">:</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="n">sent</span><span class="w">
+</span><span class="w">                </span><span class="n">at</span><span class="p">:</span><span class="w"> </span><span class="n">average</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="kt">time</span><span class="w">
+</span><span class="w">                 </span><span class="n">c</span><span class="p">:</span><span class="w"> </span><span class="n">count</span><span class="w">
+</span><span class="w">                 </span><span class="n">l</span><span class="p">:</span><span class="w"> </span><span class="k">lock</span><span class="w"> </span><span class="kt">time</span><span class="w">
+</span><span class="w">                 </span><span class="n">r</span><span class="p">:</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="n">sent</span><span class="w">
+</span><span class="w">                 </span><span class="n">t</span><span class="p">:</span><span class="w"> </span><span class="n">query</span><span class="w"> </span><span class="kt">time</span><span class="w">  
+</span><span class="w">  </span><span class="o">-</span><span class="n">r</span><span class="w">           </span><span class="n">reverse</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">sort</span><span class="w"> </span><span class="k">order</span><span class="w"> </span><span class="p">(</span><span class="n">largest</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="n">instead</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">first</span><span class="p">)</span><span class="w">
+</span><span class="w">  </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">NUM</span><span class="w">       </span><span class="n">just</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">top</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">queries</span><span class="w">
+</span><span class="w">  </span><span class="o">-</span><span class="n">a</span><span class="w">           </span><span class="n">don</span><span class="s1">&#39;t abstract all numbers to N and strings to &#39;</span><span class="n">S</span><span class="s1">&#39;
+</span><span class="s1">  -n NUM       abstract numbers with at least n digits within names
+</span><span class="s1">  -g PATTERN   grep: only consider stmts that include this string
+</span><span class="s1">  -h HOSTNAME  hostname of db server for *-slow.log filename (can be wildcard),
+</span><span class="s1">               default is &#39;</span><span class="o">*</span><span class="s1">&#39;, i.e. match all
+</span><span class="s1">  -i NAME      name of server instance (if using mysql.server startup script)
+</span><span class="s1">  -l           don&#39;</span><span class="n">t</span><span class="w"> </span><span class="n">subtract</span><span class="w"> </span><span class="k">lock</span><span class="w"> </span><span class="kt">time</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="kt">time</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1"># 得到返回记录集最多的10个sql
+</span><span class="c1"></span><span class="n">mysqldumpslow</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">slow</span><span class="p">.</span><span class="n">log</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1"># 得到访问次数最多的10个sql
+</span><span class="c1"></span><span class="n">mysqldumpslow</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">slow</span><span class="p">.</span><span class="n">log</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1"># 得到按照时间排序的前10条里面含有左连接的查询语句
+</span><span class="c1"></span><span class="n">mysqldumpslow</span><span class="w"> </span><span class="o">-</span><span class="n">s</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">-</span><span class="n">g</span><span class="w"> </span><span class="s2">&#34;left join&#34;</span><span class="w"> </span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mysql</span><span class="o">/</span><span class="n">slow</span><span class="p">.</span><span class="n">log</span><span class="w">
+</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h3 id="批量插入1000万行数据">批量插入1000万行数据</h3>
+<p>首先对log_bin_trust_function_creators参数进行设置 <a href="https://www.cnblogs.com/kerrycode/p/7641835.html">https://www.cnblogs.com/kerrycode/p/7641835.html</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="kt">set</span><span class="w"> </span><span class="n">global</span><span class="w"> </span><span class="n">log_bin_trust_function_creators</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="创建测试表">创建测试表</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">test</span><span class="o">`</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">`</span><span class="n">test</span><span class="o">`</span><span class="w">  </span><span class="p">(</span><span class="w">
+</span><span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="kt">bigint</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="kp">AUTO_INCREMENT</span><span class="p">,</span><span class="w">
+</span><span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">CHARACTER</span><span class="w"> </span><span class="kt">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span><span class="w">  </span><span class="o">`</span><span class="n">password</span><span class="o">`</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">CHARACTER</span><span class="w"> </span><span class="kt">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span><span class="w">  </span><span class="o">`</span><span class="n">age</span><span class="o">`</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span><span class="w">  </span><span class="o">`</span><span class="n">created_at</span><span class="o">`</span><span class="w"> </span><span class="kt">datetime</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="no">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="no">NULL</span><span class="p">,</span><span class="w">
+</span><span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">USING</span><span class="w"> </span><span class="n">BTREE</span><span class="w">
+</span><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="kp">ENGINE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InnoDB</span><span class="w"> </span><span class="k">CHARACTER</span><span class="w"> </span><span class="kt">SET</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">utf8mb4_0900_ai_ci</span><span class="w"> </span><span class="n">ROW_FORMAT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Dynamic</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="新建随机字符串函数">新建随机字符串函数</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">DELIMITER</span><span class="w"> </span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="k">DROP</span><span class="w"> </span><span class="n">FUNCTION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">rand_string</span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="k">CREATE</span><span class="w">  </span><span class="n">FUNCTION</span><span class="w"> </span><span class="o">`</span><span class="n">rand_string</span><span class="o">`</span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="kt">INT</span><span class="p">)</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="kp">CHARSET</span><span class="w"> </span><span class="n">UTF8</span><span class="w">
+</span><span class="w"></span><span class="n">BEGIN</span><span class="w">
+</span><span class="w">    </span><span class="k">DECLARE</span><span class="w"> </span><span class="n">origin_str</span><span class="w"> </span><span class="kt">char</span><span class="p">(</span><span class="mi">52</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="k">DECLARE</span><span class="w"> </span><span class="n">return_str</span><span class="w"> </span><span class="kt">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="k">DECLARE</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="k">WHILE</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="n">DO</span><span class="w">
+</span><span class="w">        </span><span class="kt">SET</span><span class="w"> </span><span class="n">return_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">CONCAT</span><span class="p">(</span><span class="n">return_str</span><span class="p">,</span><span class="w"> </span><span class="nf">SUBSTRING</span><span class="p">(</span><span class="n">origin_str</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="nf">FLOOR</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">RAND</span><span class="p">()</span><span class="o">*</span><span class="mi">52</span><span class="w"> </span><span class="p">),</span><span class="mi">1</span><span class="p">));</span><span class="w">
+</span><span class="w">        </span><span class="kt">SET</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="n">END</span><span class="w"> </span><span class="k">WHILE</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">return_str</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="n">END</span><span class="w"> </span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="n">DELIMITER</span><span class="w"> </span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="新建随机数函数">新建随机数函数</h4>
+<p>随机生成100以内的数字</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">DELIMITER</span><span class="w"> </span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="k">DROP</span><span class="w"> </span><span class="n">FUNCTION</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">rand_num</span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="k">CREATE</span><span class="w">  </span><span class="n">FUNCTION</span><span class="w"> </span><span class="o">`</span><span class="n">rand_num</span><span class="o">`</span><span class="p">()</span><span class="w"> </span><span class="n">RETURNS</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="w">
+</span><span class="w"></span><span class="n">BEGIN</span><span class="w">
+</span><span class="w">    </span><span class="k">DECLARE</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="kt">SET</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">FLOOR</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="nf">RAND</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="p">);</span><span class="w">
+</span><span class="w">    </span><span class="k">RETURN</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="n">END</span><span class="w"> </span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="n">DELIMITER</span><span class="w"> </span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="创建存储过程">创建存储过程</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">DELIMITER</span><span class="w"> </span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="k">DROP</span><span class="w"> </span><span class="k">procedure</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">insert_test</span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="k">create</span><span class="w"> </span><span class="k">procedure</span><span class="w"> </span><span class="nf">insert_test</span><span class="p">(</span><span class="k">in</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="k">in</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w">
+</span><span class="w"></span><span class="n">BEGIN</span><span class="w">
+</span><span class="w">    </span><span class="k">DECLARE</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kt">INT</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="kt">set</span><span class="w"> </span><span class="n">autocommit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="k">repeat</span><span class="w"> 
+</span><span class="w">        </span><span class="kt">set</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="mi">1</span><span class="p">;</span><span class="w">
+</span><span class="w">        </span><span class="k">insert</span><span class="w"> </span><span class="k">into</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">password</span><span class="p">,</span><span class="n">age</span><span class="p">,</span><span class="n">created_at</span><span class="p">)</span><span class="w"> 
+</span><span class="w">        </span><span class="k">values</span><span class="w"> </span><span class="p">(</span><span class="nf">rand_string</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span><span class="w"> </span><span class="nf">rand_string</span><span class="p">(</span><span class="mi">24</span><span class="p">),</span><span class="nf">rand_num</span><span class="p">(),</span><span class="k">current_time</span><span class="p">()</span><span class="w"> </span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="n">until</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">end</span><span class="w">
+</span><span class="w">    </span><span class="n">end</span><span class="w"> </span><span class="k">repeat</span><span class="w"> </span><span class="p">;</span><span class="w">
+</span><span class="w">    </span><span class="n">commit</span><span class="w"> </span><span class="p">;</span><span class="w">
+</span><span class="w"></span><span class="n">END</span><span class="w"> </span><span class="err">$$</span><span class="w">
+</span><span class="w"></span><span class="n">DELIMITER</span><span class="w"> </span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="调用存储过程">调用存储过程</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1"># 每次插入50w，插20次
+</span><span class="c1"></span><span class="k">call</span><span class="w"> </span><span class="nf">insert_test</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">500000</span><span class="p">)</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div>
             </article>
         </div>
         <section class="pre-next">
@@ -213,23 +599,25 @@ select的数据列只需要从索引中就能取得，就不必回表查询，�
         <nav id="TableOfContents">
   <ul>
     <li><a href="#七种join理论">七种JOIN理论</a></li>
-    <li><a href="#什么是索引">什么是索引？</a></li>
-    <li><a href="#索引的分类">索引的分类</a></li>
-    <li><a href="#索引的结构">索引的结构</a></li>
-    <li><a href="#哪些情况需要建立索引">哪些情况需要建立索引？</a></li>
-    <li><a href="#哪些情况下不需要创建索引">哪些情况下不需要创建索引？</a></li>
-    <li><a href="#explain分析教程">explain分析教程</a>
+    <li><a href="#索引优化">索引优化</a>
       <ul>
-        <li><a href="#id">id</a></li>
-        <li><a href="#select_type">select_type</a></li>
-        <li><a href="#table">table</a></li>
-        <li><a href="#type">type</a></li>
-        <li><a href="#possible_keys">possible_keys</a></li>
-        <li><a href="#key">key</a></li>
-        <li><a href="#key_len">key_len</a></li>
-        <li><a href="#ref">ref</a></li>
-        <li><a href="#rows">rows</a></li>
-        <li><a href="#extra">extra</a></li>
+        <li><a href="#什么是索引">什么是索引？</a></li>
+        <li><a href="#索引的分类">索引的分类</a></li>
+        <li><a href="#索引的结构">索引的结构</a></li>
+        <li><a href="#哪些情况需要建立索引">哪些情况需要建立索引？</a></li>
+        <li><a href="#哪些情况下不需要创建索引">哪些情况下不需要创建索引？</a></li>
+        <li><a href="#explain分析教程">explain分析教程</a></li>
+        <li><a href="#如何避免索引失效">如何避免索引失效？</a></li>
+        <li><a href="#不会造成索引失效的情况">不会造成索引失效的情况？</a></li>
+      </ul>
+    </li>
+    <li><a href="#查询截取分析">查询截取分析</a>
+      <ul>
+        <li><a href="#分析步骤">分析步骤</a></li>
+        <li><a href="#查询优化分析">查询优化分析</a></li>
+        <li><a href="#慢查询日志">慢查询日志</a></li>
+        <li><a href="#日志分析工具mysqldumpslow">日志分析工具mysqldumpslow</a></li>
+        <li><a href="#批量插入1000万行数据">批量插入1000万行数据</a></li>
       </ul>
     </li>
   </ul>

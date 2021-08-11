@@ -6,7 +6,18 @@
     <description>Recent content on CYRTO&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 25 Jul 2021 18:20:52 +0800</lastBuildDate><atom:link href="https://cyrto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 29 Jul 2021 17:56:57 +0800</lastBuildDate><atom:link href="https://cyrto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>深入理解JVM</title>
+      <link>https://cyrto.github.io/2021/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3jvm/</link>
+      <pubDate>Thu, 29 Jul 2021 17:56:57 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3jvm/</guid>
+      <description>相关命令 jps JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程
+1 2 3 4 5 6 7 8 9 10 11  usage: jps [--help] jps [-q] [-mlvV] [&amp;lt;hostid&amp;gt;] Definitions: &amp;lt;hostid&amp;gt;: &amp;lt;hostname&amp;gt;[:&amp;lt;port&amp;gt;] -? -h --help -help: Print this help message and exit. -q 只显示pid，不显示class名称,jar文件名和传递给main 方法的参数。 -l 输出应用程序main class的完整package名 或者 应用程序的jar文件完整路径名。 -m 输出传递给main方法的参数 -v 输出传递给JVM的参数   用法：
+1 2 3 4 5 6  &amp;gt; jps -l 1896 jdk.jcmd/sun.tools.jps.Jps 11292 15548 20444 org.jetbrains.jps.cmdline.Launcher   jinfo jinfo可以输出java进程、core文件或远程debug服务器的配置信息。可以使用jps -v替换</description>
+    </item>
+    
     <item>
       <title>生成对抗网络GAN</title>
       <link>https://cyrto.github.io/2021/07/%E7%94%9F%E6%88%90%E5%AF%B9%E6%8A%97%E7%BD%91%E7%BB%9Cgan/</link>
@@ -38,7 +49,7 @@ https://thischemicaldoesnotexist.com/</description>
       <pubDate>Sun, 25 Jul 2021 15:34:50 +0800</pubDate>
       
       <guid>https://cyrto.github.io/2021/07/%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8Cmysql%E4%BC%98%E5%8C%96/</guid>
-      <description>七种JOIN理论 什么是索引？ 索引是一种已排序的，加快数据库查询速度的数据结构
+      <description>七种JOIN理论 索引优化 什么是索引？ 索引是一种已排序的，加快数据库查询速度的数据结构
 优势：提高数据检索效率，降低数据库的IO成本，降低CPU的消耗
 劣势：虽然提高了查询速度，但是会降低数据的更新速度，因为执行update的同时，不但要修改行数据，还要修改索引的指向
 结论：索引需要在业务迭代过程中不断优化，删除重建是不可避免的

@@ -61,7 +61,7 @@ ul.list-page li a{
 
 /*single-page*/
 #single-page{
-  width: 60%;
+  width: 66%;
   margin: 64px auto 0;
 }
 
@@ -92,6 +92,22 @@ aside.toc{
   padding-top:72px; margin-top:-72px;
 }
 
+
+#single-page .highlight {
+  margin: 4px 4px 20px;
+}
+
+#single-page blockquote {
+  margin: 4px 4px 16px;
+  padding: 4px 16px;
+  border-left: 2px salmon solid;
+  background-color: #ced0d461;
+}
+
+#single-page blockquote p {
+  font-size: 14px;
+}
+
 #TableOfContents ul {
   list-style: none;
   text-decoration: none;
@@ -113,4 +129,6 @@ aside.toc{
 #TableOfContents li a:hover{
   color: #111827;
 }
+
+
 
