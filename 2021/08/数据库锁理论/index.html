@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html><link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/typograghy.css">
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
+    <nav>
+        <div class="nav-container">
+            <a class="logo" href="/">CYRTO's BLOG</a>
+            <menu>
+                
+                <a href="/2021">Go</a>
+                
+                <a href="/2021">JAVA</a>
+                
+                <a href="/about">关于</a>
+                
+            </menu>
+        </div>
+    </nav>
+</header><div id="content">
+<section id="single-page">
+    <section class="main">
+        <h1 id="title">数据库锁理论</h1>
+        <p class="meta">发布于2021-08-12 | 总字数 132 </p>
+        <div>
+            <article id="content">
+                <h2 id="读锁共享锁s锁">读锁（共享锁，S锁）</h2>
+<p>读锁的特点：</p>
+<ul>
+<li>
+<p>所有的线程都只能读，不能写</p>
+</li>
+<li>
+<p>当前线程尝试写入，会直接抛出错误</p>
+</li>
+<li>
+<p>其他线程尝试写入，会阻塞</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">-- 给mysql加表级别的读锁
+</span><span class="c1"></span><span class="k">lock</span><span class="w"> </span><span class="kp">tables</span><span class="w"> </span><span class="o">`</span><span class="n">tablename</span><span class="o">`</span><span class="w"> </span><span class="k">read</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1">-- 解锁
+</span><span class="c1"></span><span class="k">unlock</span><span class="w"> </span><span class="k">table</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="写锁排他锁x锁">写锁（排他锁，X锁）</h2>
+<p>写锁的特点：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="c1">-- 给mysql加表级别的写锁
+</span><span class="c1"></span><span class="k">lock</span><span class="w"> </span><span class="kp">tables</span><span class="w"> </span><span class="o">`</span><span class="n">tablename</span><span class="o">`</span><span class="w"> </span><span class="k">write</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="c1">-- 解锁
+</span><span class="c1"></span><span class="k">unlock</span><span class="w"> </span><span class="k">table</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>总结： 读锁会阻塞写，但是不会阻塞读，而写锁，会把读和写都阻塞</p>
+<h2 id="分析表锁定的状态">分析表锁定的状态</h2>
+<p>可以通过检查table_locks_waited和table_locks_immediate状态变量来分析系统上的表锁定：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">show</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;table%&#39;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>table_locks_immediate：表级别锁的次数</p>
+<p>table_locks_waited：出现表级锁竞争而发生的等待的次数（不能立即获取锁的次数，每等待一次锁值加1），越高说明有严重的表级别锁竞争</p>
+<h2 id="行锁">行锁</h2>
+<p>innodb默认的update语句就是行锁，一个事务更新某一行，未提交之前，另一个事务再去更新这一行会阻塞，本地测试需要 set autocommit = 0</p>
+<p>索引失效会导致行锁变成表锁，比如 查询字段的字符串不写单引号，导致发生隐式类型转换，这样会导致行锁退化成表锁</p>
+<h3 id="查看innodb的行锁状态">查看innodb的行锁状态</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">show</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="k">like</span><span class="w"> </span><span class="s1">&#39;innodb_row_lock%&#39;</span><span class="p">;</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="n">Innodb_row_lock_current_waits</span><span class="err">：当前正在等待锁定的数量</span><span class="w">
+</span><span class="w"></span><span class="n">Innodb_row_lock_time</span><span class="p">:</span><span class="w"> </span><span class="err">从系统启动到现在锁定的总时间长度</span><span class="w">
+</span><span class="w"></span><span class="n">Innodb_row_lock_time_avg</span><span class="err">：每次等待所花平均时间</span><span class="w">
+</span><span class="w"></span><span class="n">Innodb_row_lock_time_max</span><span class="err">：从系统启动到现在等待最长的一次所花的时间</span><span class="w">
+</span><span class="w"></span><span class="n">Innodb_row_lock_waits</span><span class="err">：</span><span class="w"> </span><span class="err">系统启动后到现在总共等待的次数</span><span class="w">
+</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="间隙锁的危害">间隙锁的危害</h2>
+<p>使用范围条件查询时，并请求S或者X锁时，innodb会给符合条件的已有数据记录的索引项加锁，对于键值再条件范围内的但并不存在的记录，叫做间隙（GAP）</p>
+<p>Innodb也会对这个间隙加锁，这种锁机制就是所谓的间隙锁（Next-Key锁）</p>
+<p>因为Query执行过程中通过范围查找的话，他会锁定整个范围内的所有的索引键值，即使这个键值并不存在</p>
+<p>间隙锁有一个比较致命的弱点，锁定一个范围键值之后，即使某些不存在的键值也会被锁定，无法插入键值范围内的任何数据，在高并发场景下可能会对性能造成很大的影响</p>
+<h2 id="意向锁">意向锁</h2>
+<p>用于建立锁的层次结构。 意向锁包含三种类型：意向共享 (IS)、意向排他 (IX) 和意向排他共享 (SIX)</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">请求的模式</th>
+<th>IS</th>
+<th>S</th>
+<th>U</th>
+<th>IX</th>
+<th>SIX</th>
+<th>X</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">意向共享 (IS)</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td style="text-align:left">共享 (S)</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td style="text-align:left">更新 (U)</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td style="text-align:left">意向排他 (IX)</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td style="text-align:left">意向排他共享 (SIX)</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+<tr>
+<td style="text-align:left">排他 (X)</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>参考：https://docs.microsoft.com/zh-cn/previous-versions/sql/sql-server-2008-r2/ms175519(v=sql.105)</p>
+<h2 id="自增锁">自增锁</h2>
+<h2 id="事务隔离级别">事务隔离级别</h2>
+<h3 id="脏读">脏读</h3>
+<p>读取了其它事务还没有提交的数据</p>
+<h3 id="不可重复读">不可重复读</h3>
+<p>不可重复读是读取了其他事务更改的数据，针对update操作</p>
+<p>解决：使用行级锁，锁定该行，事务A多次读取操作完成后才释放该锁，这个时候才允许其他事务更改刚才的数据。</p>
+<h3 id="幻读">幻读</h3>
+<p>幻读是读取了其他事务新增的数据，针对insert和delete操作</p>
+<p>解决：使用表级锁，锁定整张表，事务A多次读取数据总量之后才释放该锁，这个时候才允许其他事务新增数据。</p>
+
+            </article>
+        </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3jvm/"> &lt; 深入理解JVM</a>
+                
+                
+                <a class="next" href="https://cyrto.github.io/2021/08/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"> MySQL主从复制 ></a>
+                
+                <div class="clear"></div>
+            </div>
+        </section>
+    </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#读锁共享锁s锁">读锁（共享锁，S锁）</a></li>
+    <li><a href="#写锁排他锁x锁">写锁（排他锁，X锁）</a></li>
+    <li><a href="#分析表锁定的状态">分析表锁定的状态</a></li>
+    <li><a href="#行锁">行锁</a>
+      <ul>
+        <li><a href="#查看innodb的行锁状态">查看innodb的行锁状态</a></li>
+      </ul>
+    </li>
+    <li><a href="#间隙锁的危害">间隙锁的危害</a></li>
+    <li><a href="#意向锁">意向锁</a></li>
+    <li><a href="#自增锁">自增锁</a></li>
+    <li><a href="#事务隔离级别">事务隔离级别</a>
+      <ul>
+        <li><a href="#脏读">脏读</a></li>
+        <li><a href="#不可重复读">不可重复读</a></li>
+        <li><a href="#幻读">幻读</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
+</section>
+
+<aside id="meta">
+    <div>
+        
+        
+    </div>
+
+</aside>
+
+        </div></body>
+</html>

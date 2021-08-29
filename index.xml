@@ -6,7 +6,77 @@
     <description>Recent content on CYRTO&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 29 Jul 2021 17:56:57 +0800</lastBuildDate><atom:link href="https://cyrto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Aug 2021 15:56:25 +0800</lastBuildDate><atom:link href="https://cyrto.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Zookeeper指南</title>
+      <link>https://cyrto.github.io/2021/08/zookeeper%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Sun, 29 Aug 2021 15:56:25 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/08/zookeeper%E6%8C%87%E5%8D%97/</guid>
+      <description>数据结构 Zookeeper的数据模型与Unix的文件系统很类似，整体上是一棵树，每一个节点是一个ZNode，默认存储大小为1MB
+应用场景  软负载均衡 在zookeeper中记录每台服务器的访问数，让访问数最少的服务器去处理这次请求  Zookeeper集群安装（虚拟机版本） 1.克隆3台centos虚拟机 2.修改hosts文件 vi /etc/hosts
+1 2 3 4 5  127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4 ::1 localhost localhost.localdomain localhost6 localhost6.localdomain6 192.168.157.128 node1 192.168.157.100 node2 192.168.157.101 node3   测试是否配置成功，可以在每个节点上执行
+1 2 3  ping node1 ping node2 ping node3   3.书写xsync脚本和xcall脚本，用于集群管理 xcall脚本
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26  #!</description>
+    </item>
+    
+    <item>
+      <title>Java并发编程指南</title>
+      <link>https://cyrto.github.io/2021/08/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Sun, 15 Aug 2021 18:12:36 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/08/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/</guid>
+      <description>ConcurrentHashmap设计思路 作为线程安全的map，ConcurrentHashmap在不同的jdk版本也有不同的实现
+Jdk7 数据结构为 ReentrantLock+Segment+HashEntry，一个Segment中包含一个HashEntry数组，每一个hashEntry又是链表/红黑树结构
+元素查询：二次Hash，第一次Hash定位到Segment，第二次Hash定位到元素所在的链表的头部
+Segment分段锁继承了ReentrantLock，锁定操作的Segment，其他的Segment不受影响，并发度为Segment个数，
+可以通过构造函数指定，数组扩容不会影响其他的segment
+get方法无需加锁，volatile保证
+JDK8 数据结构使用Synchronized + CAS + Node + 红黑树，Node和val和Next都用volatile修饰，保证可见性
+查找，替换，赋值操作都使用CAS，在加锁方面只锁定链表的head节点，不影响其它元素的读写，锁粒度更细，效率更高，扩容时，
+阻塞所有的读写操作，并发扩容
+读操作无锁：Node的val和next用volatile修饰，读写线程对该变量互相可见，数据也用volatile修饰，保证扩容时被读线程感知
+synchronized和ReentrantLock的区别  底层实现原理：  synchronized是关键字属于JVM层面，monitorenter（底层是通过monitor对象实现，其中wait和notify等方法也依赖monitor对象）
+ReentrantLock，Lock是JDk api层面的锁
+ 使用方法： synchronized不需要手动释放锁，Jvm会自动让线程释放锁 ReentrantLock可以手动释放锁
+  等待是否可以中断：
+  synchronized不可中断，除非抛出异常或者正常运行完成
+ReentrantLock可以中断，（通过设置超时方法tryLock，lockInterruptibly()代码块，调用interrupt可以中断）
+加锁是否公平：  synchronized是非公平锁
+ReentrantLock默认是非公平锁，构造方法的可以传入true来配置fair，使其变成公平锁
+锁绑定多个条件Condition  synchronized没有该机制，只能notifyAll唤醒全部线程
+ReentrantLock可以通过条件变量Condition实现分组唤醒，精确唤醒某些线程</description>
+    </item>
+    
+    <item>
+      <title>MySQL主从复制</title>
+      <link>https://cyrto.github.io/2021/08/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</link>
+      <pubDate>Fri, 13 Aug 2021 21:30:25 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/08/mysql%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据库锁理论</title>
+      <link>https://cyrto.github.io/2021/08/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E7%90%86%E8%AE%BA/</link>
+      <pubDate>Thu, 12 Aug 2021 15:20:15 +0800</pubDate>
+      
+      <guid>https://cyrto.github.io/2021/08/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%81%E7%90%86%E8%AE%BA/</guid>
+      <description>读锁（共享锁，S锁） 读锁的特点：
+  所有的线程都只能读，不能写
+  当前线程尝试写入，会直接抛出错误
+  其他线程尝试写入，会阻塞
+  1 2 3 4 5  -- 给mysql加表级别的读锁 locktables`tablename`read;-- 解锁 unlocktable  写锁（排他锁，X锁） 写锁的特点：
+1 2 3 4 5  -- 给mysql加表级别的写锁 locktables`tablename`write;-- 解锁 unlocktable  总结： 读锁会阻塞写，但是不会阻塞读，而写锁，会把读和写都阻塞
+分析表锁定的状态 可以通过检查table_locks_waited和table_locks_immediate状态变量来分析系统上的表锁定：
+1  showstatuslike&amp;#39;table%&amp;#39;  table_locks_immediate：表级别锁的次数
+table_locks_waited：出现表级锁竞争而发生的等待的次数（不能立即获取锁的次数，每等待一次锁值加1），越高说明有严重的表级别锁竞争
+行锁 innodb默认的update语句就是行锁，一个事务更新某一行，未提交之前，另一个事务再去更新这一行会阻塞，本地测试需要 set autocommit = 0
+索引失效会导致行锁变成表锁，比如 查询字段的字符串不写单引号，导致发生隐式类型转换，这样会导致行锁退化成表锁
+查看innodb的行锁状态 1 2 3 4 5 6 7 8 9  showstatuslike&amp;#39;innodb_row_lock%&amp;#39;;Innodb_row_lock_current_waits：当前正在等待锁定的数量Innodb_row_lock_time:从系统启动到现在锁定的总时间长度Innodb_row_lock_time_avg：每次等待所花平均时间Innodb_row_lock_time_max：从系统启动到现在等待最长的一次所花的时间Innodb_row_lock_waits：系统启动后到现在总共等待的次数  间隙锁的危害 使用范围条件查询时，并请求S或者X锁时，innodb会给符合条件的已有数据记录的索引项加锁，对于键值再条件范围内的但并不存在的记录，叫做间隙（GAP）</description>
+    </item>
+    
     <item>
       <title>深入理解JVM</title>
       <link>https://cyrto.github.io/2021/07/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3jvm/</link>

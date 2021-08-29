@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html><link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/typograghy.css">
+<link rel="stylesheet" href="/css/code.css">
+
+
+
+<script type="application/javascript" src="/js/app.js"></script><body><header>
+    <nav>
+        <div class="nav-container">
+            <a class="logo" href="/">CYRTO's BLOG</a>
+            <menu>
+                
+                <a href="/2021">Go</a>
+                
+                <a href="/2021">JAVA</a>
+                
+                <a href="/about">关于</a>
+                
+            </menu>
+        </div>
+    </nav>
+</header><div id="content">
+<section id="single-page">
+    <section class="main">
+        <h1 id="title">Zookeeper指南</h1>
+        <p class="meta">发布于2021-08-29 | 总字数 723 </p>
+        <div>
+            <article id="content">
+                <h2 id="数据结构">数据结构</h2>
+<p>Zookeeper的数据模型与Unix的文件系统很类似，整体上是一棵树，每一个节点是一个ZNode，默认存储大小为1MB</p>
+<h2 id="应用场景">应用场景</h2>
+<ul>
+<li>软负载均衡
+在zookeeper中记录每台服务器的访问数，让访问数最少的服务器去处理这次请求</li>
+</ul>
+<h2 id="zookeeper集群安装虚拟机版本">Zookeeper集群安装（虚拟机版本）</h2>
+<h3 id="1克隆3台centos虚拟机">1.克隆3台centos虚拟机</h3>
+<h3 id="2修改hosts文件">2.修改hosts文件</h3>
+<p>vi /etc/hosts</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.157.128 node1
+192.168.157.100 node2
+192.168.157.101 node3
+</code></pre></td></tr></table>
+</div>
+</div><p>测试是否配置成功，可以在每个节点上执行</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">ping node1
+ping node2
+ping node3
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="3书写xsync脚本和xcall脚本用于集群管理">3.书写xsync脚本和xcall脚本，用于集群管理</h3>
+<p>xcall脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="c1"># 获取控制台指令</span>
+
+
+<span class="c1"># 判断指令是否为空</span>
+<span class="nv">pcount</span><span class="o">=</span><span class="nv">$#</span>
+<span class="k">if</span><span class="o">((</span><span class="nv">pcount</span><span class="o">==</span>0<span class="o">))</span><span class="p">;</span>
+<span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&#34;command can not be null !&#34;</span>
+        <span class="nb">exit</span>
+<span class="k">fi</span>
+
+<span class="c1"># 获取当前登录用户</span>
+<span class="nv">user</span><span class="o">=</span><span class="sb">`</span>whoami<span class="sb">`</span>
+
+<span class="nb">source</span> /etc/profile
+<span class="c1"># 在从机执行指令,这里需要根据你具体的集群情况配置，host与具体主机名一致</span>
+<span class="k">for</span> host in node1 node2 node3
+<span class="k">do</span>
+        <span class="nb">echo</span> <span class="o">================</span> <span class="nv">$host</span><span class="o">=================</span>
+        ssh <span class="nv">$user</span>@<span class="nv">$host</span> <span class="nv">$@</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="o">===========================================</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>xsync脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span><span class="c1"># $#：表示传递给脚本或函数的参数个数。</span>
+<span class="c1">#1 获取输入参数个数，如果没有参数，直接退出</span>
+<span class="nv">pcount</span><span class="o">=</span><span class="nv">$#</span>
+<span class="k">if</span><span class="o">((</span><span class="nv">pcount</span><span class="o">==</span>0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+<span class="nb">echo</span> no args<span class="p">;</span>
+exit<span class="p">;</span>
+<span class="k">fi</span>
+
+<span class="c1">#2 获取文件名称</span>
+<span class="nv">p1</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nv">fname</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$p1</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="nv">fname</span><span class="o">=</span><span class="nv">$fname</span>
+
+<span class="c1">#3 获取上级目录到绝对路径</span>
+<span class="nv">pdir</span><span class="o">=</span><span class="sb">`</span><span class="nb">cd</span> -P <span class="k">$(</span>dirname <span class="nv">$p1</span><span class="k">)</span><span class="p">;</span> <span class="nb">pwd</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="nv">pdir</span><span class="o">=</span><span class="nv">$pdir</span>
+
+<span class="c1">#4 获取当前用户名称</span>
+<span class="nv">user</span><span class="o">=</span><span class="sb">`</span>whoami<span class="sb">`</span>
+
+<span class="c1">#5 循环</span>
+<span class="c1">#for((host=0; host&lt;5; host++)); do #echo $pdir/$fname $user@192.168.3.15$host:$pdir</span>
+ <span class="c1"># echo --------------- 192.168.3.15$host ----------------</span>
+ <span class="c1"># rsync -rvl $pdir/$fname $user@192.168.3.15$host:$pdir</span>
+<span class="c1">#done</span>
+
+<span class="c1">#5 循环</span>
+<span class="k">for</span> host in <span class="o">{</span>node1,node2,node3<span class="o">}</span><span class="p">;</span>
+
+    <span class="k">do</span>
+       <span class="c1">#echo $pdir/$fname $user@$host:$pdir</span>
+       rsync -rvl <span class="nv">$pdir</span>/<span class="nv">$fname</span> <span class="nv">$user</span>@<span class="nv">$host</span>:<span class="nv">$pdir</span>
+<span class="k">done</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="4修改zoo_samplecfg">4.修改zoo_sample.cfg</h3>
+<p>主要修改 dataDir,默认为 /tmp/zookeeper，修改成自行创建的文件夹, zookeeper的根目录+zkData</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># The number of milliseconds of each tick</span>
+<span class="c1"># 通信心跳时间</span>
+<span class="nv">tickTime</span><span class="o">=</span><span class="m">2000</span>
+<span class="c1"># The number of ticks that the initial</span>
+<span class="c1"># synchronization phase can take</span>
+<span class="c1"># LF初始化通信时间限制（leader-follower）</span>
+<span class="nv">initLimit</span><span class="o">=</span><span class="m">10</span>
+<span class="c1"># The number of ticks that can pass between</span>
+<span class="c1"># sending a request and getting an acknowledgement</span>
+<span class="c1"># LF同步通信时限</span>
+<span class="nv">syncLimit</span><span class="o">=</span><span class="m">5</span>
+<span class="c1"># the directory where the snapshot is stored.</span>
+<span class="c1"># do not use /tmp for storage, /tmp here is just</span>
+<span class="c1"># example sakes.</span>
+<span class="nv">dataDir</span><span class="o">=</span>/root/apache-zookeeper-3.7.0-bin/zkData
+<span class="c1"># the port at which the clients will connect</span>
+<span class="nv">clientPort</span><span class="o">=</span><span class="m">2181</span>
+<span class="c1"># the maximum number of client connections.</span>
+<span class="c1"># increase this if you need to handle more clients</span>
+<span class="c1">#maxClientCnxns=60</span>
+<span class="c1">#</span>
+<span class="c1"># Be sure to read the maintenance section of the</span>
+<span class="c1"># administrator guide before turning on autopurge.</span>
+<span class="c1">#</span>
+<span class="c1"># http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance</span>
+<span class="c1">#</span>
+<span class="c1"># The number of snapshots to retain in dataDir</span>
+<span class="c1">#autopurge.snapRetainCount=3</span>
+<span class="c1"># Purge task interval in hours</span>
+<span class="c1"># Set to &#34;0&#34; to disable auto purge feature</span>
+<span class="c1">#autopurge.purgeInterval=1</span>
+
+<span class="c1">## Metrics Providers</span>
+<span class="c1">#</span>
+<span class="c1"># https://prometheus.io Metrics Exporter</span>
+<span class="c1">#metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider</span>
+<span class="c1">#metricsProvider.httpPort=7000</span>
+<span class="c1">#metricsProvider.exportJvmInfo=true</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="5启动并测试单机版">5.启动并测试单机版</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1">#启动服务端</span>
+&gt; /bin/zkServer.sh start
+
+&gt; jps -l
+
+<span class="m">27255</span> org.apache.zookeeper.server.quorum.QuorumPeerMain
+<span class="m">27515</span> sun.tools.jps.Jps
+
+
+<span class="c1"># 启动客户端</span>
+
+&gt; bin/zkCli.sh 
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+<span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 1<span class="o">]</span> ls /
+<span class="o">[</span>zookeeper<span class="o">]</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="6集群安装">6.集群安装</h3>
+<h4 id="配置myid文件">配置myid文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># node1机器：</span>
+vi zkData/myid
+<span class="c1"># 写入 2</span>
+<span class="c1"># node2机器：</span>
+vi zkData/myid
+<span class="c1"># 写入 3</span>
+<span class="c1"># node3机器：</span>
+vi zkData/myid
+<span class="c1"># 写入 4</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="修改zoocfg文件">修改zoo.cfg文件</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">
+格式
+server.A<span class="o">=</span>B:C:D
+A:数字，表示第几台服务器
+B:服务器地址，ip地址或者别名
+C：服务器follower与集群中leader服务器交换信息的端口
+D：万一集群中的Leader挂了，需要一个端口来进行重新选举，选出一个新的Leader，这个端口是用来执行选举时服务器相互通信的端口
+
+server.2<span class="o">=</span>node1:2888:3888
+server.3<span class="o">=</span>node2:2888:3888
+server.4<span class="o">=</span>node3:2888:3888
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="启动集群">启动集群</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">
+
+<span class="o">[</span>root@localhost ~<span class="o">]</span><span class="c1"># apache-zookeeper-3.7.0-bin/bin/zkServer.sh start</span>
+
+<span class="o">[</span>root@localhost ~<span class="o">]</span><span class="c1"># apache-zookeeper-3.7.0-bin/bin/zkServer.sh status</span>
+ZooKeeper JMX enabled by default
+Using config: /root/apache-zookeeper-3.7.0-bin/bin/../conf/zoo.cfg
+Client port found: 2181. Client address: localhost. Client SSL: false.
+Error contacting service. It is probably not running.
+
+<span class="c1"># Error contacting service. It is probably not running.  报错原因：没有关闭防火墙</span>
+<span class="c1"># ~/xsync.sh service iptables stop</span>
+
+启动成功：
+
+<span class="o">[</span>root@localhost apache-zookeeper-3.7.0-bin<span class="o">]</span><span class="c1"># bin/zkServer.sh status</span>
+ZooKeeper JMX enabled by default
+Using config: /root/apache-zookeeper-3.7.0-bin/bin/../conf/zoo.cfg
+Client port found: 2181. Client address: localhost. Client SSL: false.
+Mode: follower / leader
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="7zookeeper的选举机制">7.Zookeeper的选举机制</h3>
+<p><img src="../../../assets/img/zk/zk-election.png" alt=""></p>
+<p>SID:服务器ID，用来唯一标识一台Zookeeper集群中的机器，每台机器不能重复，和myid一样</p>
+<p>ZXID：事务ID，ZXID是一个事务ID，用来标识一次服务器状态的变更，在某一个时刻，集群中的每台机器的ZXID值不一定完全一致，
+这和Zookeeper服务器对于客户端更新请求的处理逻辑有关</p>
+<p>Epoch：每一个Leader任期的代号，没有Leader时同一轮投票过程中的逻辑时钟是完全相同的，每投完一次票这个数据就会增加</p>
+<h4 id="选举时机">选举时机</h4>
+<ul>
+<li>
+<p>服务器初始化启动</p>
+</li>
+<li>
+<p>服务器运行期间无法和Leader保持联系</p>
+</li>
+</ul>
+<p>选举leader规则</p>
+<ul>
+<li>1.Epoch大的直接胜出</li>
+<li>2.Epoch相同，事务ID大的胜出</li>
+<li>3.事务ID相同，服务器id大的胜出</li>
+</ul>
+<h4 id="zk集群启动脚本">zk集群启动脚本</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="k">case</span> <span class="nv">$1</span> in
+<span class="s2">&#34;start&#34;</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">for</span> i in node1 node2 node3
+  <span class="k">do</span>
+    <span class="nb">echo</span>  -------zookeeper <span class="nv">$i</span> start--------
+    ssh <span class="nv">$i</span> <span class="s2">&#34;/root/apache-zookeeper-3.7.0-bin/bin/zkServer.sh start&#34;</span>
+    <span class="k">done</span>
+<span class="o">}</span><span class="p">;;</span>
+
+<span class="s2">&#34;stop&#34;</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> i in node1 node2 node3
+  <span class="k">do</span>
+    <span class="nb">echo</span>  -------zookeeper <span class="nv">$i</span> stop--------
+    ssh <span class="nv">$i</span> <span class="s2">&#34;/root/apache-zookeeper-3.7.0-bin/bin/zkServer.sh stop&#34;</span>
+    <span class="k">done</span>
+<span class="o">}</span><span class="p">;;</span>
+
+
+<span class="s2">&#34;status&#34;</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> i in node1 node2 node3
+  <span class="k">do</span>
+    <span class="nb">echo</span>  -------zookeeper <span class="nv">$i</span> status--------
+    ssh <span class="nv">$i</span> <span class="s2">&#34;/root/apache-zookeeper-3.7.0-bin/bin/zkServer.sh status&#34;</span>
+    <span class="k">done</span>
+<span class="o">}</span><span class="p">;;</span>
+<span class="k">esac</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>复制到/usr/local/bin文件夹下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">zk start
+zk stop
+zk status
+</code></pre></td></tr></table>
+</div>
+</div>
+            </article>
+        </div>
+        <section class="pre-next">
+            <div>
+                
+                <a class="previous" href="https://cyrto.github.io/2021/08/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/"> &lt; Java并发编程指南</a>
+                
+                
+                <div class="clear"></div>
+            </div>
+        </section>
+    </section>
+    <aside class="toc">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#数据结构">数据结构</a></li>
+    <li><a href="#应用场景">应用场景</a></li>
+    <li><a href="#zookeeper集群安装虚拟机版本">Zookeeper集群安装（虚拟机版本）</a>
+      <ul>
+        <li><a href="#1克隆3台centos虚拟机">1.克隆3台centos虚拟机</a></li>
+        <li><a href="#2修改hosts文件">2.修改hosts文件</a></li>
+        <li><a href="#3书写xsync脚本和xcall脚本用于集群管理">3.书写xsync脚本和xcall脚本，用于集群管理</a></li>
+        <li><a href="#4修改zoo_samplecfg">4.修改zoo_sample.cfg</a></li>
+        <li><a href="#5启动并测试单机版">5.启动并测试单机版</a></li>
+        <li><a href="#6集群安装">6.集群安装</a></li>
+        <li><a href="#7zookeeper的选举机制">7.Zookeeper的选举机制</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </aside>
+    <script>
+        let toc = document.getElementById("TableOfContents");
+        li(toc)
+    </script>
+</section>
+
+<aside id="meta">
+    <div>
+        
+        
+    </div>
+
+</aside>
+
+        </div></body>
+</html>
