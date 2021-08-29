@@ -24,7 +24,7 @@
 <section id="single-page">
     <section class="main">
         <h1 id="title">Zookeeper指南</h1>
-        <p class="meta">发布于2021-08-29 | 总字数 723 </p>
+        <p class="meta">发布于2021-08-29 | 总字数 1076 </p>
         <div>
             <article id="content">
                 <h2 id="数据结构">数据结构</h2>
@@ -536,7 +536,216 @@ zk stop
 zk status
 </code></pre></td></tr></table>
 </div>
+</div><h3 id="zookeeper节点类型">Zookeeper节点类型</h3>
+<ul>
+<li>持久节点</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 1<span class="o">]</span> create /test
+Created /test
+<span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 7<span class="o">]</span> get -s /test
+null
+<span class="nv">cZxid</span> <span class="o">=</span> 0x200000002
+<span class="nv">ctime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:25:36 EDT <span class="m">2021</span>
+<span class="nv">mZxid</span> <span class="o">=</span> 0x200000002
+<span class="nv">mtime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:25:36 EDT <span class="m">2021</span>
+<span class="nv">pZxid</span> <span class="o">=</span> 0x200000002
+<span class="nv">cversion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">dataVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">aclVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">ephemeralOwner</span> <span class="o">=</span> 0x0
+<span class="nv">dataLength</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">numChildren</span> <span class="o">=</span> <span class="m">0</span>
+
+
+</code></pre></td></tr></table>
 </div>
+</div><ul>
+<li>持久节点带序号</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 8<span class="o">]</span> create -s /test
+Created /test0000000002
+<span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 10<span class="o">]</span> get -s /test0000000002
+null
+<span class="nv">cZxid</span> <span class="o">=</span> 0x200000006
+<span class="nv">ctime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:29:25 EDT <span class="m">2021</span>
+<span class="nv">mZxid</span> <span class="o">=</span> 0x200000006
+<span class="nv">mtime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:29:25 EDT <span class="m">2021</span>
+<span class="nv">pZxid</span> <span class="o">=</span> 0x200000006
+<span class="nv">cversion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">dataVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">aclVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">ephemeralOwner</span> <span class="o">=</span> 0x0
+<span class="nv">dataLength</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">numChildren</span> <span class="o">=</span> <span class="m">0</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>临时节点</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 24<span class="o">]</span> create -e /testTmp <span class="s2">&#34;temp&#34;</span>
+Created /testTmp
+<span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 26<span class="o">]</span> get -s /testTmp
+temp
+<span class="nv">cZxid</span> <span class="o">=</span> 0x200000007
+<span class="nv">ctime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:30:49 EDT <span class="m">2021</span>
+<span class="nv">mZxid</span> <span class="o">=</span> 0x200000007
+<span class="nv">mtime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:30:49 EDT <span class="m">2021</span>
+<span class="nv">pZxid</span> <span class="o">=</span> 0x200000007
+<span class="nv">cversion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">dataVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">aclVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">ephemeralOwner</span> <span class="o">=</span> 0x40000530c300000   <span class="c1">#临时节点才有值</span>
+<span class="nv">dataLength</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">numChildren</span> <span class="o">=</span> <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>临时节点带序号</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 29<span class="o">]</span> create -e -s /testTmp <span class="s2">&#34;test004&#34;</span>
+Created /testTmp0000000005
+<span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 30<span class="o">]</span> get -s /testTmp0000000005
+test004
+<span class="nv">cZxid</span> <span class="o">=</span> 0x20000000a
+<span class="nv">ctime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:33:03 EDT <span class="m">2021</span>
+<span class="nv">mZxid</span> <span class="o">=</span> 0x20000000a
+<span class="nv">mtime</span> <span class="o">=</span> Sun Aug <span class="m">29</span> 09:33:03 EDT <span class="m">2021</span>
+<span class="nv">pZxid</span> <span class="o">=</span> 0x20000000a
+<span class="nv">cversion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">dataVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">aclVersion</span> <span class="o">=</span> <span class="m">0</span>
+<span class="nv">ephemeralOwner</span> <span class="o">=</span> 0x40000530c300000
+<span class="nv">dataLength</span> <span class="o">=</span> <span class="m">7</span>
+<span class="nv">numChildren</span> <span class="o">=</span> <span class="m">0</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="监听机制">监听机制</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 2<span class="o">]</span> get -w /test
+null
+<span class="o">[</span>zk: localhost:2181<span class="o">(</span>CONNECTED<span class="o">)</span> 3<span class="o">]</span>
+<span class="c1"># 当其它节点修改/test下面的值时（通过set /test  &#34;test&#34;），会出现下述提示</span>
+WATCHER::  
+
+WatchedEvent state:SyncConnected type:NodeDataChanged path:/test
+</code></pre></td></tr></table>
+</div>
+</div><p>监听机制只能生效一次，也就是说get -w只能监听一次，当值发生变化后，把监听次数用完了，第一次再去修改，不会再有监听的效果
+需要重新get -w</p>
+<h3 id="节点删除和查看">节点删除和查看</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># 删除一个节点</span>
+delete /test
+
+<span class="c1">### 删除多个节点</span>
+deleteall /test
+
+<span class="c1">### </span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用api操作zookeeper集群">使用API操作Zookeeper集群</h3>
+<p>代码：https://github.com/cyrto/springboot-lab/blob/master/sb-zookeeper/src/main/java/com/cyrtous/sblab/zk/ZkClient.java#L50</p>
+
             </article>
         </div>
         <section class="pre-next">
@@ -563,6 +772,10 @@ zk status
         <li><a href="#5启动并测试单机版">5.启动并测试单机版</a></li>
         <li><a href="#6集群安装">6.集群安装</a></li>
         <li><a href="#7zookeeper的选举机制">7.Zookeeper的选举机制</a></li>
+        <li><a href="#zookeeper节点类型">Zookeeper节点类型</a></li>
+        <li><a href="#监听机制">监听机制</a></li>
+        <li><a href="#节点删除和查看">节点删除和查看</a></li>
+        <li><a href="#使用api操作zookeeper集群">使用API操作Zookeeper集群</a></li>
       </ul>
     </li>
   </ul>
